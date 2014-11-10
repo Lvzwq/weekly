@@ -14,17 +14,19 @@
 
 
 </head>
-<body onload="showpic('{{page_id}}');showpaper('{{firstpaper}}');shownews('{{page_id}}')">
+
+<body onload="FirstLoad()">
     <div class="head">
         <div class="head1">
             <ul>
                 <li style="background-image: none"><a href="#" onclick="return HomePage.call(this);">
                     设为主页</a></li>
                 <li><a href="#" onclick="return Love();">加入收藏</a></li>
+                <li><a href="http://weekly.hustnews.com/text/" target="_blank">旧版入口</a></li>
             </ul>
         </div>
         <div class="nouse">
-            <img src="image/bar2.jpg" />
+            <img alt="fdsf" src="image/bar2.jpg" />
         </div>
         <div class="head3">
             <pre>中共华中科技大学委员会主办 国内统一刊号：CN-0802/（G）</pre>
@@ -35,7 +37,7 @@
     </div>
     <div class="left">
         <div class="select">
-            <select class="s" id="select1" name="Select1" onchange="changepaper(this.options[this.selectedIndex].value,this.options[this.selectedIndex].getAttribute('qs'))">
+            <select class="s" id="select1" name="Select1" onchange="changepaper(this.options[this.selectedIndex].value)">
                 <option value="0">----请选择期数----</option>
                 {%foreach (string[] str in paper)
                   {%>
@@ -44,7 +46,7 @@
                     第<%=str[1] %>期</option>
                 <%} %>
             </select>
-            <pre>总<%=paper[0][1] %>期 当前期数：<span id="span">第<%=currentpaper %>期</span></pre>
+            <pre>总<%=paper.Length==0 ? "" : paper[0][1] %>期 当前期数：<span id="span">第<%=currentpaper %>期</span></pre>
         </div>
         <div class="baozhi" id="showpic">
         </div>
@@ -81,43 +83,14 @@
                 </div>
             </div>
             <div>
-		<div id="loading" style="width:80px;margin-left:50px;margin-top:50px;display:none;height:380px">加载中...</div>
-		<div id="news"></div>
+                <div id="loading" style="width: 80px; margin-left: 50px; margin-top: 50px; display: none;
+                    height: 380px">
+                    加载中...</div>
+                <div id="news">
+                </div>
             </div>
         </div>
-        <!--div class="editors" id="rightfoot">
-            <h1>
-                欢迎投稿</h1>
-            <h2>
-                您可以通过E-mail或电话</h2>
-            <img src="image/envelope.png"></img>
-            <div class="E">
-                <div class="E1">
-                    <h3>
-                        校报编辑部</h3>
-                    <p>
-                        xbbjb@mail.hust.edu.cn</p>
-                </div>
-                <div class="E2">
-                    <h4>
-                        校报主编<span>&nbsp;胡艳华</span></h4>
-                    <p>
-                        yanhuahu@mail.hust.edu.cn</p>
-                </div>
-                <div class="E3">
-                    <h5>
-                        校报副主编<span>&nbsp;万霞</span></h5>
-                    <p>
-                        wanxia76@mail.hust.edu.cn</p>
-                </div>
-            </div>
-            <div class="NO">
-                <h3>
-                    热线电话：027-87542701</h3>
-                <h3>
-                    传真电话：027-87541544</h3>
-            </div>
-        </div-->
+
     </div>
     <div style="clear: both;">
     </div>
