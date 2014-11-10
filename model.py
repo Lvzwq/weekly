@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 from sqlalchemy import *
-from sqlalchemy.orm import mapper, sessionmaker
+from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
-from appconfig import MYSQL_HOST, MYSQL_USER, MYSQL_DB, MYSQL_CHARSET, MYSQL_PASSWORD
+
+from config.appconfig import MYSQL_HOST, MYSQL_USER, MYSQL_DB, MYSQL_CHARSET, MYSQL_PASSWORD
+
 # 安装的扩展库sqlalchemy
 
 # conn='mysql://root:root@localhost/newscenter?charset=utf8'
@@ -55,28 +57,29 @@ class Paper(Base):
     time = Column(DateTime)
 
 
-def init_db():
-    # moz_article = Table('article', metadata, autoload=True)
-    # mapper(Article, moz_article)
-    Session = sessionmaker(bind=engine)
-    session = Session()
-    return session
+class Model():
+    def __init__(self):
+        # moz_article = Table('article', metadata, autoload=True)
+        # mapper(Article, moz_article)
+        Session = sessionmaker(bind=engine)
+        self.session = Session()
 
 
-def get_article_list(session, paper_id, ):
-    article_list = session.query(Article.id, Article.title, Article.reply_title, Article.has_pic, Article.sub_title)
-    article_list = article_list.filter(Article.paper_id == paper_id)
-    article_list = article_list.all()
-    return article_list
+    def get_article_list(self, paper_id, ):
+        article_list = self.session.query(Article.id, Article.title, Article.reply_title, Article.has_pic,
+                                          Article.sub_title)
+        article_list = article_list.filter(Article.paper_id == paper_id)
+        article_list = article_list.all()
+        return article_list
 
 
-def get_all_paper(session):
-    paper_list = session.query().all
-    return paper_list
+    def get_all_paper(self):
+        paper_list = self.session.query().all
+        return paper_list
 
 
-def close_session(session):
-    session.close()
+    def close_session(self):
+        self.session.close()
 
 
 

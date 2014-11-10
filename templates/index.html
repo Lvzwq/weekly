@@ -39,14 +39,10 @@
         <div class="select">
             <select class="s" id="select1" name="Select1" onchange="changepaper(this.options[this.selectedIndex].value)">
                 <option value="0">----请选择期数----</option>
-                {%foreach (string[] str in paper)
-                  {%>
-                <option value="<%=str[0] %>" qs="第<%=str[1] %>期">
-                    <%=str[2] %>
-                    第<%=str[1] %>期</option>
-                <%} %>
+                <option value="" qs="第122期">
+                    第222期</option>
             </select>
-            <pre>总<%=paper.Length==0 ? "" : paper[0][1] %>期 当前期数：<span id="span">第<%=currentpaper %>期</span></pre>
+            <pre>总 1222期 当前期数：<span id="span">第100期</span></pre>
         </div>
         <div class="baozhi" id="showpic">
         </div>
@@ -60,7 +56,7 @@
         <div class="ss" style="cursor: pointer">
             <input type="image" src="image/ss.png" /></div>
         <div class="dqrq">
-            <pre>当前日期：<%=timenow %></pre>
+            <pre>当前日期：2012-01-10</pre>
         </div>
         <div style="clear: both">
         </div>
