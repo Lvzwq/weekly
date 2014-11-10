@@ -37,7 +37,7 @@
         <div class="select">
             <select class="s" id="select1" name="Select1" onchange="changepaper(this.options[this.selectedIndex].value,this.options[this.selectedIndex].getAttribute('qs'))">
                 <option value="0">----请选择期数----</option>
-                <%foreach (string[] str in paper)
+                {%foreach (string[] str in paper)
                   {%>
                 <option value="<%=str[0] %>" qs="第<%=str[1] %>期">
                     <%=str[2] %>

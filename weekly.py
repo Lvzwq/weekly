@@ -8,15 +8,14 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    '''
     sess = init_db()
     paper_list = get_all_paper(sess)
     for i in paper_list:
         print i
     close_session(sess)
-    '''
     #return 'hello world'
     return render_template("index.html")
+
 
 
 
