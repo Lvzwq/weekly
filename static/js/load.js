@@ -1,4 +1,4 @@
-function GetPic(paras){
+﻿function GetPic(paras){
     var http = new HTTPRequest();
     if(paras == null){
         http.onresponse = function(request){
@@ -160,7 +160,7 @@ function showarticle(word_news_id,value){
     news.innerHTML = "<div style='height:500px'><p style='padding-top:50px;padding-left:50px'>加载中...</p></div>";
     var http=new HTTPRequest();
         http.onresponse=function(request1){
-
+            
             news.innerHTML = request1.responseText;
         }
     http.send("webajax/showarticle.aspx?word_news_id=" + word_news_id + "&" + value,"","post");

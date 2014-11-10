@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>登录</title>
+
+    <script type="text/javascript">
+    function check(){
+
+    if(this.uid.value==null||this.uid.value==""){ alert("用户名不能为空");return false;}
+    if(this.pwd.value==null||this.pwd.value=="") {alert("密码不能为空");return false;}
+
+    }
+    </script>
+
+</head>
+<body>
+    <div style="text-align: center">
+        <div>
+            登录</div>
+        <hr />
+        <form onsubmit="return check.call(this);" action="login.aspx" method="post">
+            <div>
+                用户名:<input type="text" name="uid" /></div>
+            <div style ="margin-top :8px">
+                密&nbsp;&nbsp;&nbsp; 码:<input type="password" name="pwd" /></div>
+            <div style ="margin-top:8px">
+                <input type="submit" value="登录" /></div>
+        </form>
+    </div>
+    <div>
+        <%=tip %>
+    </div>
+</body>
+</html>

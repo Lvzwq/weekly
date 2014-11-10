@@ -1,4 +1,4 @@
-function HTTPRequest() {}
+﻿function HTTPRequest() {}
 HTTPRequest.prototype.run = function() {
 	if(this.request && this.request.readyState == 4 && this.state) {
 		var status = this.request.status;
