@@ -11,7 +11,7 @@ body {
 }
 
 .head1 {
-	background:url(../image/bar1.jpg) repeat-x;
+	background:url(../images/bar1.jpg) repeat-x;
 	padding-left: 0;
 	width:398px;
 	float:left;
@@ -25,7 +25,7 @@ body {
 .head1 li {
 	float:left;
 	padding-top:3px;
-	background:url(../image/divider.png) no-repeat 25px 100%;
+	background:url(../images/divider.png) no-repeat 25px 100%;
 	padding-left:50px;
 	line-height:18px;
 	height:18px;
@@ -45,7 +45,7 @@ body {
 }
 
 .head3 {
-	background: url(../image/bar3.jpg) repeat-x;
+	background: url(../images/bar3.jpg) repeat-x;
 	width:513px;
 	float:right ;
 	height:84px;
@@ -72,7 +72,7 @@ body {
 }
 
 .select {
-	background:url(../image/wunai.png) no-repeat;
+	background:url(../images/wunai.png) no-repeat;
 	height:29px;
 	padding-left:12px;
 	/*margin-left:4px;*/
@@ -330,7 +330,7 @@ h3,h4,h5 {
 	font-size:12px;
 	font-weight:bold;
 	color: #cb0d23;
-	background:url('../image/square.png') left center no-repeat;
+	background:url('../images/square.png') left center no-repeat;
 	padding-left:20px;
 }
 
@@ -359,7 +359,7 @@ h3,h4,h5 {
 .tail {
 	clear: both ;
 	margin-top: 7px;
-	background:url(../image/tail.png) repeat-x;
+	background:url(../images/tail.png) repeat-x;
 	border:1px #9b0b1c solid;
 	height:46px;
 	text-align: center ;

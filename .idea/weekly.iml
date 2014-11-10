@@ -5,7 +5,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
-<<<<<<< HEAD
   <component name="TemplatesService">
     <option name="TEMPLATE_CONFIGURATION" value="Jinja2" />
     <option name="TEMPLATE_FOLDERS">
@@ -14,7 +13,5 @@
       </list>
     </option>
   </component>
-=======
->>>>>>> b787b36a2e514cd52f3ef9a03d5ab6b63449b238
 </module>
 

@@ -6,11 +6,11 @@
 
     <title>华中科技大学校报</title>
 
-    <link href="/assets/css/index.css" rel="stylesheet" type="text/css">
-    <script type="text/javascript" src="/assets/js/http_request.js"></script>
-    <script type="text/javascript" src="/assets/js/url.js"></script>
-    <script type="text/javascript" src="/assets/js/load.js"></script>
-    <script type="text/javascript" src="/assets/js/index.js"></script>
+    <link href="/static/css/index.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="/static/js/http_request.js"></script>
+    <script type="text/javascript" src="/static/js/url.js"></script>
+    <script type="text/javascript" src="/static/js/load.js"></script>
+    <script type="text/javascript" src="/static/js/index.js"></script>
 </head>
 
 <body onload="FirstLoad()">
@@ -23,11 +23,11 @@
             </ul>
         </div>
         <div class="nouse">
-            <img src="/assets/images/bar2.jpg">
+            <img src="/static/images/bar2.jpg">
         </div>
         <div class="head3">
             <pre>中共华中科技大学委员会主办 国内统一刊号：CN-0802/（G）</pre>
-            <img src="/assets/images/logo.png">
+            <img src="/static/images/logo.png">
         </div>
     </div>
     <div style="clear: both">
@@ -49,18 +49,31 @@
         <div class="baozhi" id="showpic">
 
 
-<div style="background: url(pic/2014/11/1004.jpg                                                                                                                                                                                    );background-repeat:no-repeat; position: relative; width: 409px; height: 597px;">
-<div style="width:100%;height:100%;background: url(image/banner.gif) no-repeat;"></div>
+<div style="
+background: url(http://images.hustnews.com/weekly/2014/11/1004.jpg);
+background-repeat: no-repeat;
+position: relative;
+width: 409px;
+height: 597px;
+">
+
+<div style="width:100%;height:100%;background: url(static/image/banner.gif) no-repeat;"></div>
 
 
-      <div style="position: absolute; display: none; top: 227px; left: 21px; z-index: 22; font-size: 12px; width: 210px;" id="div7392">
+ {% for area in areas %}
+                      <div style="position: absolute; display: none; top: {{area.title_y}}; left: {{area.x}}; z-index: 22; font-size: 12px; width: {{area.width}};" id="div{{area.article_id}}">
 <div style="margin-left:15px"><img src="image/tip.gif"></div>
 <div style="background-color: #eb545d;color:#45070b; padding:8px;text-align:center;">
-        <span style="font-size:14px;font-weight:bold">脉冲强磁场实验装置跻身世界“最好”</span>
+        <span style="font-size:14px;font-weight:bold">{{area.title}}</span>
 </div>
     </div>
-    <div style="cursor: pointer; position: absolute; left: 21px; top: 100px; width: 267px; height: 120px;" onmouseover="this.style.border='red 2px solid';document.getElementById('div7392').style.display='block';" onmouseout="this.style.border='';;document.getElementById('div7392').style.display='none';" onclick="window.location.href='#word_news_id=7392';FirstLoad()">
+    <div style="cursor: pointer; position: absolute; left: {area.x}; top: {area.y}; width: {area.width}; height: {area.height};"
+    onmouseover="this.style.border='red 2px solid';document.getElementById('div{area.article_id}').style.display='block';"
+    onmouseout="this.style.border='';;document.getElementById('div{{area.article_id}}').style.display='none';" onclick="window.location.href='/article/{area.article_id}';FirstLoad()">
     </div>
+                {% endfor %}
+
+
 
 
 
