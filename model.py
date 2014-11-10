@@ -62,14 +62,16 @@ def init_db():
     session = Session()
     return session
 
-def get_article_list(session,paper_id,):
-    article_list = session.query(Article.id,Article.title,Article.reply_title,Article.has_pic,Article.sub_title)
+
+def get_article_list(session, paper_id, ):
+    article_list = session.query(Article.id, Article.title, Article.reply_title, Article.has_pic, Article.sub_title)
     article_list = article_list.filter(Article.paper_id == paper_id)
     article_list = article_list.all()
     return article_list
 
+
 def get_all_paper(session):
-    paper_list =session.query().all
+    paper_list = session.query().all
     return paper_list
 
 
