@@ -9,7 +9,7 @@ function FirstLoad(){
 
 function changepaper(paper_id){
     if(paper_id == "0"){return;}
-    window.location.href = "#paper_id=" + paper_id;
+    window.location.href = "/paper/" + paper_id;
     FirstLoad();
 }
 

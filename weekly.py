@@ -50,8 +50,9 @@ def index(paper_id=None, page_id=None):
         height = str(area_list[i].height)[:-2]
         title_y = int(y) + int(height) + 7
         area_list[i].title_y = str(title_y) + 'px'
+        area_list[i].article_title = model.get_article_info(area_list[i].article_id).title
     return render_template("index.html", max_paper=max_paper.num, article_list=article_list, paper_list=paper,
-                           data=data)
+                           data=data, area_list=area_list)
 
 
 if __name__ == '__main__':

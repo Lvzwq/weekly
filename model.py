@@ -108,6 +108,9 @@ class Model():
         page_info = self.session.query(Page).filter(Page.id == page_id).all()
         return page_info[0]
 
+    def get_article_info(self,article_id):
+        article_info =self.session.query(Article.title).filter(Article.id ==article_id).all()
+        return article_info[0]
 
     def close_session(self):
         self.session.close()
