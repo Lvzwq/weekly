@@ -1,16 +1,15 @@
 <!DOCTYPE html>
-
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
     <title>华中科技大学校报</title>
 
-    <link href="/assets/css/index.css" rel="stylesheet" type="text/css">
-    <script type="text/javascript" src="/assets/js/http_request.js"></script>
-    <script type="text/javascript" src="/assets/js/url.js"></script>
-    <script type="text/javascript" src="/assets/js/load.js"></script>
-    <script type="text/javascript" src="/assets/js/index.js"></script>
+    <link href="/static/css/index.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="/static/js/http_request.js"></script>
+    <script type="text/javascript" src="/static/js/url.js"></script>
+    <!--<script type="text/javascript" src="/static/js/load.js"></script>-->
+    <script type="text/javascript" src="/static/js/index.js"></script>
 
 
 </head>
@@ -19,18 +18,18 @@
     <div class="head">
         <div class="head1">
             <ul>
-                <li style="background-image: none"><a href="#" onclick="return HomePage.call(this);">
+                <li style="background-/static/images: none"><a href="#" onclick="return HomePage.call(this);">
                     设为主页</a></li>
                 <li><a href="#" onclick="return Love();">加入收藏</a></li>
                 <li><a href="http://weekly.hustnews.com/text/" target="_blank">旧版入口</a></li>
             </ul>
         </div>
         <div class="nouse">
-            <img alt="fdsf" src="image/bar2.jpg" />
+            <img alt="fdsf" src="/static/images/bar2.jpg" />
         </div>
         <div class="head3">
             <pre>中共华中科技大学委员会主办 国内统一刊号：CN-0802/（G）</pre>
-            <img src="image/logo.png" />
+            <img src="/static/images/logo.png" />
         </div>
     </div>
     <div style="clear: both">
@@ -39,10 +38,11 @@
         <div class="select">
             <select class="s" id="select1" name="Select1" onchange="changepaper(this.options[this.selectedIndex].value)">
                 <option value="0">----请选择期数----</option>
-                <option value="" qs="第122期">
-                    第222期</option>
+                {% for paper in paper_list %}
+                     <option value="{{ paper['id'] }}" qs="第{{ paper['num'] }}期">{{ paper['time'] }}  第{{ paper['num'] }}期</option>
+                {% endfor %}
             </select>
-            <pre>总 1222期 当前期数：<span id="span">第100期</span></pre>
+            <pre>总{{ max_paper }}期 当前期数：<span id="span">第100期</span></pre>
         </div>
         <div class="baozhi" id="showpic">
         </div>
@@ -50,13 +50,13 @@
     <div class="right" id="righttext">
         <form action="" onsubmit="return KeySearch();" class="search">
         <div class="fdj">
-            <img src="image/fdj.png" /></div>
+            <img src="/static/images/fdj.png" /></div>
         <div>
             <input class="Checkbox1" type="text" id="keyword" /></div>
         <div class="ss" style="cursor: pointer">
-            <input type="image" src="image/ss.png" /></div>
+            <input type="/static/images" src="/static/images/ss.png" /></div>
         <div class="dqrq">
-            <pre>当前日期：2012-01-10</pre>
+            <pre>当前日期：{{ data['now'] }} 星期{{ data['week'] }}</pre>
         </div>
         <div style="clear: both">
         </div>
@@ -69,13 +69,13 @@
                 </div>
                 <div class="arrowleft" id="scrollleft" onmouseover="pagemove('left')" onmouseout="delmove()"
                     style="cursor: pointer;">
-                    <img src="image/aleft.png" />
+                    <img src="/static/images/aleft.png" />
                 </div>
                 <div class="B" style="float: left; width: 300px; position: relative; overflow: hidden"
                     id="pagename">
                 </div>
                 <div class="arrowright" style="cursor: pointer" onmouseover="pagemove('right')" onmouseout="delmove()">
-                    <img src="image/aright.png" />
+                    <img src="/static/images/aright.png" />
                 </div>
             </div>
             <div>

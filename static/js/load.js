@@ -10,14 +10,14 @@
         http.onresponse = function(request){
             showpic(request.responseText,paras["word_news_id"]);
         }
-        http.send("webajax/getpage_id.aspx?word_news_id=" + paras["word_news_id"]);
+        //http.send("webajax/getpage_id.aspx?word_news_id=" + paras["word_news_id"]);
     }
     else if(paras["paper_id"]){
         var http = new HTTPRequest();
         http.onresponse = function(request){
             showpic(request.responseText);
         }
-        http.send("webajax/getpage_id.aspx?paper_id=" + paras["paper_id"]);
+        //http.send("webajax/getpage_id.aspx?paper_id=" + paras["paper_id"]);
     }
     else if(paras["page_id"]){
         showpic(paras["page_id"]);
@@ -26,7 +26,7 @@
         http.onresponse = function(request){
             showpic(request.responseText);
         }
-        http.send("webajax/getpage_id.aspx");
+        //http.send("webajax/getpage_id.aspx");
     }
 }
 //获取图片
@@ -36,7 +36,7 @@ function showpic(page_id,word_news_id){
         var showpic=document .getElementById ("showpic");
         showpic.innerHTML=request.responseText;
     }
-    http.send ("webajax/getimage.aspx?page_id=" + page_id + "&word_news_id=" + word_news_id,"","post");
+    //http.send ("webajax/getimage.aspx?page_id=" + page_id + "&word_news_id=" + word_news_id,"","post");
 }
 
 function GetPageName(paras){
@@ -46,34 +46,34 @@ function GetPageName(paras){
             var p = request.responseText.split(',');
             showpaper(p[0],p[1]);
         }
-        http.send("webajax/GetPaperId.aspx");
+        //http.send("webajax/GetPaperId.aspx");
     }
     else if(paras["word_news_id"]){
         http.onresponse = function(request){
             var p = request.responseText.split(',');
             showpaper(p[0],p[1]);
         }
-        http.send("webajax/GetPaperId.aspx?word_news_id=" + paras["word_news_id"]);
+        //http.send("webajax/GetPaperId.aspx?word_news_id=" + paras["word_news_id"]);
     }
     else if(paras["paper_id"]){
         http.onresponse = function(request){
             showpaper(paras["paper_id"],request.responseText);
         }
-        http.send("webajax/getpage_id.aspx?paper_id=" + paras["paper_id"]);
+        //http.send("webajax/getpage_id.aspx?paper_id=" + paras["paper_id"]);
     }
     else if(paras["page_id"]){
         http.onresponse = function(request){
             var p =request.responseText.split(',');
             showpaper(p[0],p[1]);
         }
-        http.send("webajax/GetPaperId.aspx?page_id=" + paras["page_id"]);
+        //http.send("webajax/GetPaperId.aspx?page_id=" + paras["page_id"]);
     }
     else{
         http.onresponse = function(request){
             var p = request.responseText.split(',');
             showpaper(p[0],p[1]);
         }
-        http.send("webajax/GetPaperId.aspx");
+        //http.send("webajax/GetPaperId.aspx");
     }
 }
 
@@ -85,7 +85,7 @@ function showpaper(paper_id,page_id){
         pagename.innerHTML =request.responseText;
         ChangePaperName(paper_id);
     }
-    http.send("webajax/getpagename.aspx?paper_id=" + paper_id + "&page_id=" + page_id,"","post")
+    //http.send("webajax/getpagename.aspx?paper_id=" + paper_id + "&page_id=" + page_id,"","post")
 }
 
 function ChangePaperName(paper_id){
@@ -94,7 +94,7 @@ function ChangePaperName(paper_id){
         var span = document.getElementById("span");
         span.innerHTML = "第" + request.responseText + "期";
     }
-    http.send("webajax/getpapername.aspx?paper_id=" + paper_id);
+    //http.send("webajax/getpapername.aspx?paper_id=" + paper_id);
 }
 
 //文章、新闻list
@@ -104,21 +104,21 @@ function GetNews(paras){
         http.onresponse = function(request){
             shownews(request.responseText);
         }
-        http.send("webajax/getpage_id.aspx");
+        //http.send("webajax/getpage_id.aspx");
     }
     else if(paras["word_news_id"] && !paras["keyword"]){
         var http = new HTTPRequest();
         http.onresponse = function(request){
         showarticle(paras["word_news_id"],"page_id=" + request.responseText);
         }
-        http.send("webajax/getpage_id.aspx?word_news_id=" + paras["word_news_id"]);
+        //http.send("webajax/getpage_id.aspx?word_news_id=" + paras["word_news_id"]);
     }
     else if(paras["paper_id"]){
         var http =new HTTPRequest();
         http.onresponse = function(request){
             shownews(request.responseText);
         }
-        http.send("webajax/getpage_id.aspx?paper_id=" + paras["paper_id"]);
+        //http.send("webajax/getpage_id.aspx?paper_id=" + paras["paper_id"]);
     }
     else if(paras["word_news_id"] && paras["keyword"]){
         if(!paras["page"]){
@@ -152,7 +152,7 @@ function shownews(page_id){
         news.innerHTML=request.responseText;
         document.getElementById("newslist").style.display = 'block';
     }
-    http.send ("webajax/getnews.aspx?page_id=" + page_id);
+    //http.send ("webajax/getnews.aspx?page_id=" + page_id);
 }
 
 function showarticle(word_news_id,value){
@@ -163,7 +163,7 @@ function showarticle(word_news_id,value){
             
             news.innerHTML = request1.responseText;
         }
-    http.send("webajax/showarticle.aspx?word_news_id=" + word_news_id + "&" + value,"","post");
+    //http.send("webajax/showarticle.aspx?word_news_id=" + word_news_id + "&" + value,"","post");
     return false;
 }
 
@@ -178,16 +178,16 @@ function Paging(word,page,keyword){
         }
     }
     if(word=="pre"){
-        http.send ("webajax/search.aspx?page=" + (page-1) + "&keyword=" + keyword,"","post");
+        //http.send ("webajax/search.aspx?page=" + (page-1) + "&keyword=" + keyword,"","post");
         window.location.href = "#keyword=" + keyword + "&page=" + (page-1) + "&gopage=true";
     }
     else if(word=="next"){
         page++;
-        http.send("webajax/search.aspx?page=" + page + "&keyword=" + keyword,"","post");
+        //http.send("webajax/search.aspx?page=" + page + "&keyword=" + keyword,"","post");
         window.location.href = "#keyword=" + keyword + "&page=" + page + "&gopage=true";
     }
     else if(word=="gopage"){
-        http.send("webajax/search.aspx?page=" + page + "&keyword=" + keyword,"","post");
+        //http.send("webajax/search.aspx?page=" + page + "&keyword=" + keyword,"","post");
         window.location.href = "#keyword=" + keyword + "&page=" + page + "&gopage=true";
     }
     return false;
