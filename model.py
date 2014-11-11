@@ -9,9 +9,8 @@ from config.db import MYSQL_HOST, MYSQL_USER, MYSQL_DB, MYSQL_CHARSET, MYSQL_PAS
 
 # conn='mysql://root:root@localhost/newscenter?charset=utf8'
 conn = 'mysql://%s:%s@%s/%s?charset=%s' % (MYSQL_USER, MYSQL_PASSWORD, MYSQL_HOST, MYSQL_DB, MYSQL_CHARSET)
-engine = create_engine(conn,echo =True)
+engine = create_engine(conn, echo=True)
 Base = declarative_base(engine)
-
 
 
 class Area(Base):
@@ -46,7 +45,7 @@ class Article(Base):
 
 class Keyinfo(Base):
     __tablename__ = 'keyinfo'
-    __table_args__ = {'autoload': True}
+    # __table_args__ = {'autoload': True}
     id = Column(Integer, primary_key=True)
     keyword = Column(String)
     article_id = Column(Integer)
@@ -59,6 +58,16 @@ class Paper(Base):
     num = Column(Integer)
     issued = Column(Integer)
     time = Column(DateTime)
+
+
+class Page(Base):
+    __tablename__ = 'page'
+    __table_args__ = {'autoload': True}
+    id = Column(Integer, primary_key=True)
+    paper_id = Column(Integer)
+    num = Column(Integer)
+    pic_url = Column(String)
+    name = Column(String)
 
 
 class Model():
@@ -84,22 +93,34 @@ class Model():
 
 
     def get_max_paper(self):
-        max = self.session.query(Paper.num).order_by(desc(Paper.id)).limit(1).all()
-        return max[0][0]
+        max = self.session.query(Paper.num, Paper.id).order_by(desc(Paper.id)).limit(1).all()
+        return max[0]
+
+    def get_area_list(self, page_id):
+        area_list = self.session.query(Area).filter(Area.page_id == page_id).all()
+        return area_list
+
+    def get_pic_info(self, paper_id, num=1):
+        pic_info = self.session.query(Page).filter(Page.paper_id == paper_id).filter(Page.num == num).all()
+        return pic_info[0]
+
+    def get_page_info(self, page_id):
+        page_info = self.session.query(Page).filter(Page.id == page_id).all()
+        return page_info[0]
 
 
     def close_session(self):
         self.session.close()
 
 
-
-
 '''
 if __name__ == '__main__':
-    model =Model()
-    print model.get_article_list(555)
-    print model.get_max_paper()
+    model = Model()
+    # print model.get_article_list(555)
+    print model.get_max_paper().id
+    print
+    #for i in model.get_area_list(273):
+    #   print i.paper_id
     #for i in model.get_all_paper():
-
 
 '''
