@@ -1,0 +1,22 @@
+{% extends 'base_index.html' %}
+
+{% block content %}
+
+<div class="p">
+    <div style="font-size: 14px;text-align:right;padding-bottom:20px;padding-right:20px;">
+        <a href="http://weekly.hustnews.com/index/#"
+           onclick="window.location.href='/page/{{page_id}}}';FirstLoad();return false;"
+           style="color: #d2691e" onmouseover="this.style.color='red'"
+           onmouseout="this.style.color='#d2691e'">返回</a></div>
+    <div style="text-align:center;">
+        <!--引题-->
+        <div style="font-size:22px;font-weight:bold;padding:10px 0pt;">{{article.title}}}</div>
+    </div>
+
+    <div class="newscontent">
+        {{article.content}}}
+    </div>
+</div>
+
+{% endblock %}
+

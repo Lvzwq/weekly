@@ -98,17 +98,47 @@
             </div>
             <div class="B" style="float: left; width: 300px; position: relative; overflow: hidden"
                  id="pagename">
+
+                <div style="position: absolute; width: 280px; left: -1px" id="namelist">
+                    <ul>
+
+                        <li style="width: 65px; margin-left: 3px;text-align:center; overflow: hidden;"><a
+                                href="http://weekly.hustnews.com/index/#"
+                                onclick="window.location.href='/page/{{page_id}}';FirstLoad();return false;">
+                            <span style="color:#FFFD00">要闻</span></a></li>
+
+                        <li style="width: 65px; margin-left: 3px;text-align:center; overflow: hidden;"><a
+                                href="http://weekly.hustnews.com/index/#"
+                                onclick="window.location.href='/page/{{page_id}}';FirstLoad();return false;">
+                            <span style="">综合</span></a></li>
+
+                        <li style="width: 65px; margin-left: 3px;text-align:center; overflow: hidden;"><a
+                                href="http://weekly.hustnews.com/index/#"
+                                onclick="window.location.href='/page/{{page_id}}';FirstLoad();return false;">
+                            <span style="">视点</span></a></li>
+
+                        <li style="width: 65px; margin-left: 3px;text-align:center; overflow: hidden;"><a
+                                href="http://weekly.hustnews.com/index/#"
+                                onclick="window.location.href='/page/{{page_id}}';FirstLoad();return false;">
+                            <span style="">副刊</span></a></li>
+
+                    </ul>
+                </div>
+
             </div>
             <div class="arrowright" style="cursor: pointer" onmouseover="pagemove('right')" onmouseout="delmove()">
                 <img src="/static/images/aright.png"/>
             </div>
         </div>
+
         <div>
             <div id="loading" style="width: 80px; margin-left: 50px; margin-top: 50px; display: none;
                     height: 380px">
                 加载中...
             </div>
             <div id="news">
+                {% block content %}
+                {% endblock %}
             </div>
         </div>
     </div>
