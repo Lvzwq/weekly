@@ -15,85 +15,111 @@
 </head>
 
 <body onload="FirstLoad()">
-    <div class="head">
-        <div class="head1">
-            <ul>
-                <li style="background-/static/images: none"><a href="#" onclick="return HomePage.call(this);">
-                    设为主页</a></li>
-                <li><a href="#" onclick="return Love();">加入收藏</a></li>
-                <li><a href="http://weekly.hustnews.com/text/" target="_blank">旧版入口</a></li>
-            </ul>
-        </div>
-        <div class="nouse">
-            <img alt="fdsf" src="/static/images/bar2.jpg" />
-        </div>
-        <div class="head3">
-            <pre>中共华中科技大学委员会主办 国内统一刊号：CN-0802/（G）</pre>
-            <img src="/static/images/logo.png" />
-        </div>
+<div class="head">
+    <div class="head1">
+        <ul>
+            <li style="background-/static/images: none"><a href="#" onclick="return HomePage.call(this);">
+                设为主页</a></li>
+            <li><a href="#" onclick="return Love();">加入收藏</a></li>
+            <li><a href="http://weekly.hustnews.com/text/" target="_blank">旧版入口</a></li>
+        </ul>
     </div>
-    <div style="clear: both">
+    <div class="nouse">
+        <img alt="fdsf" src="/static/images/bar2.jpg"/>
     </div>
-    <div class="left">
-        <div class="select">
-            <select class="s" id="select1" name="Select1" onchange="changepaper(this.options[this.selectedIndex].value)">
-                <option value="0">----请选择期数----</option>
-                {% for paper in paper_list %}
-                     <option value="{{ paper['id'] }}" qs="第{{ paper['num'] }}期">{{ paper['time'] }}  第{{ paper['num'] }}期</option>
-                {% endfor %}
-            </select>
-            <pre>总{{ max_paper }}期 当前期数：<span id="span">第100期</span></pre>
-        </div>
-        <div class="baozhi" id="showpic">
-        </div>
+    <div class="head3">
+        <pre>中共华中科技大学委员会主办 国内统一刊号：CN-0802/（G）</pre>
+        <img src="/static/images/logo.png"/>
     </div>
-    <div class="right" id="righttext">
-        <form action="" onsubmit="return KeySearch();" class="search">
+</div>
+<div style="clear: both">
+</div>
+<div class="left">
+    <div class="select">
+        <select class="s" id="select1" name="Select1" onchange="changepaper(this.options[this.selectedIndex].value)">
+            <option value="0">----请选择期数----</option>
+            {% for paper in paper_list %}
+            <option value="{{ paper['id'] }}" qs="第{{ paper['num'] }}期">{{ paper['time'] }} 第{{ paper['num'] }}期
+            </option>
+            {% endfor %}
+        </select>
+        <pre>总{{ max_paper }}期 当前期数：<span id="span">第100期</span></pre>
+    </div>
+    <div class="baozhi" id="showpic">
+
+        <div style="background: url(pic/2014/11/1004.jpg);background-repeat:no-repeat; position: relative; width: 409px; height: 597px;">
+            <div style="width:100%;height:100%;background: url(image/banner.gif) no-repeat;"></div>
+
+            {% for area in area_list %}
+
+            <div style="position: absolute; display: none; top: {{area.title_y}}; left: {{area.x}}; z-index: 22; font-size: 12px; width: 210px;"
+                 id="div7392">
+                <div style="margin-left:15px"><img src="/static/images/tip.gif"></div>
+                <div style="background-color: #eb545d;color:#45070b; padding:8px;text-align:center;">
+                    <span style="font-size:14px;font-weight:bold">{{area.article_title}}}</span>
+                </div>
+            </div>
+            <div style="cursor: pointer; position: absolute; left: {{area.x}}; top: {{area.y}}; width: {{area.width}}; height: {{area.height}};"
+                 onmouseover="this.style.border='red 2px solid';document.getElementById('div{{area.article_id}}').style.display='block';"
+                 onmouseout="this.style.border='';;document.getElementById('div{{area.article_id}}}').style.display='none';"
+                 onclick="window.location.href='/article/{{area.article_id}}';FirstLoad()">
+            </div>
+
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+</div>
+<div class="right" id="righttext">
+    <form action="" onsubmit="return KeySearch();" class="search">
         <div class="fdj">
-            <img src="/static/images/fdj.png" /></div>
+            <img src="/static/images/fdj.png"/></div>
         <div>
-            <input class="Checkbox1" type="text" id="keyword" /></div>
+            <input class="Checkbox1" type="text" id="keyword"/></div>
         <div class="ss" style="cursor: pointer">
-            <input type="/static/images" src="/static/images/ss.png" /></div>
+            <input type="/static/images" src="/static/images/ss.png"/></div>
         <div class="dqrq">
             <pre>当前日期：{{ data['now'] }} 星期{{ data['week'] }}</pre>
         </div>
         <div style="clear: both">
         </div>
-        </form>
-        <div class="text">
-            <div class="yumen">
-                <div class="bmdh">
-                    <p>
-                        版面导航</p>
-                </div>
-                <div class="arrowleft" id="scrollleft" onmouseover="pagemove('left')" onmouseout="delmove()"
-                    style="cursor: pointer;">
-                    <img src="/static/images/aleft.png" />
-                </div>
-                <div class="B" style="float: left; width: 300px; position: relative; overflow: hidden"
-                    id="pagename">
-                </div>
-                <div class="arrowright" style="cursor: pointer" onmouseover="pagemove('right')" onmouseout="delmove()">
-                    <img src="/static/images/aright.png" />
-                </div>
+    </form>
+    <div class="text">
+        <div class="yumen">
+            <div class="bmdh">
+                <p>
+                    版面导航</p>
             </div>
-            <div>
-                <div id="loading" style="width: 80px; margin-left: 50px; margin-top: 50px; display: none;
-                    height: 380px">
-                    加载中...</div>
-                <div id="news">
-                </div>
+            <div class="arrowleft" id="scrollleft" onmouseover="pagemove('left')" onmouseout="delmove()"
+                 style="cursor: pointer;">
+                <img src="/static/images/aleft.png"/>
+            </div>
+            <div class="B" style="float: left; width: 300px; position: relative; overflow: hidden"
+                 id="pagename">
+            </div>
+            <div class="arrowright" style="cursor: pointer" onmouseover="pagemove('right')" onmouseout="delmove()">
+                <img src="/static/images/aright.png"/>
             </div>
         </div>
+        <div>
+            <div id="loading" style="width: 80px; margin-left: 50px; margin-top: 50px; display: none;
+                    height: 380px">
+                加载中...
+            </div>
+            <div id="news">
+            </div>
+        </div>
+    </div>
 
-    </div>
-    <div style="clear: both;">
-    </div>
-    <div class="tail">
+</div>
+<div style="clear: both;">
+</div>
+<div class="tail">
         <pre>华中科技大学校报编辑部出版  邮箱：xbbjb@mail.hust.edu.cn  电话：027-87542701  传真：027-87541544
 地址：华中科技大学新闻中心四楼  邮编：430074
 版权所有&copy;1999-2008    <a href="http://www.bingyan.net/" target="_blank">冰岩作坊</a> 制作维护</pre>
-    </div>
+</div>
 </body>
 </html>
