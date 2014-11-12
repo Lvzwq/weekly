@@ -79,10 +79,10 @@ class Model():
         self.session = session()
 
 
-    def get_article_list(self, paper_id):
+    def get_article_list(self, page_id):
         article_list = self.session.query(Article.id, Article.title, Article.reply_title, Article.has_pic,
                                           Article.sub_title)
-        article_list = article_list.filter(Article.paper_id == paper_id)
+        article_list = article_list.filter(Article.page_id == page_id)
         article_list = article_list.all()
         return article_list
 
@@ -108,9 +108,13 @@ class Model():
         page_info = self.session.query(Page).filter(Page.id == page_id).all()
         return page_info[0]
 
-    def get_article_info(self,article_id):
-        article_info =self.session.query(Article.title).filter(Article.id ==article_id).all()
+    def get_article_info(self, article_id):
+        article_info = self.session.query(Article).filter(Article.id == article_id).all()
         return article_info[0]
+
+    def get_paper_info(self, paper_id):
+        page_info = self.session.query(Paper.num).filter(Paper.id == paper_id).all()
+        return  page_info[0].num
 
     def close_session(self):
         self.session.close()

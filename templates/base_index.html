@@ -39,11 +39,11 @@
         <select class="s" id="select1" name="Select1" onchange="changepaper(this.options[this.selectedIndex].value)">
             <option value="0">----请选择期数----</option>
             {% for paper in paper_list %}
-            <option value="{{ paper['id'] }}" qs="第{{ paper['num'] }}期">{{ paper['time'] }} 第{{ paper['num'] }}期
-            </option>
+                <option value="{{ paper['id'] }}" qs="第{{ paper['num'] }}期">{{ paper['pub_time'] }} 第{{ paper['num'] }}期
+                </option>
             {% endfor %}
         </select>
-        <pre>总{{ max_paper }}期 当前期数：<span id="span">第100期</span></pre>
+        <pre>总{{ data['max_paper'] }}期 当前期数：<span id="span">第{{ data['current_page'] }}期</span></pre>
     </div>
     <div class="baozhi" id="showpic">
 
@@ -53,24 +53,24 @@
             {% for area in area_list %}
 
             <div style="position: absolute; display: none; top: {{area.title_y}}; left: {{area.x}}; z-index: 22; font-size: 12px; width: 210px;"
-                 id="div7392">
+                 id="div{{ area.article_id }}">
                 <div style="margin-left:15px"><img src="/static/images/tip.gif"></div>
                 <div style="background-color: #eb545d;color:#45070b; padding:8px;text-align:center;">
                     <span style="font-size:14px;font-weight:bold">{{area.article_title}}}</span>
                 </div>
             </div>
             <div style="cursor: pointer; position: absolute; left: {{area.x}}; top: {{area.y}}; width: {{area.width}}; height: {{area.height}};"
-                 onmouseover="this.style.border='red 2px solid';document.getElementById('div{{area.article_id}}').style.display='block';"
-                 onmouseout="this.style.border='';;document.getElementById('div{{area.article_id}}}').style.display='none';"
-                 onclick="window.location.href='/article/{{area.article_id}}';FirstLoad()">
-            </div>
-
-
-            {% endfor %}
-
-        </div>
-
+                 onmouseover="this.style.border='red 2px solid';document.getElementById('div{{ area.article_id }}').style.display='block';"
+                 onmouseout="this.style.border='';;document.getElementById('div{{ area.article_id }}}').style.display='none';"
+                 onclick="window.location.href='/article/{{ area.article_id }}';FirstLoad()">
     </div>
+
+
+    {% endfor %}
+
+</div>
+
+</div>
 </div>
 <div class="right" id="righttext">
     <form action="" onsubmit="return KeySearch();" class="search">
@@ -98,17 +98,47 @@
             </div>
             <div class="B" style="float: left; width: 300px; position: relative; overflow: hidden"
                  id="pagename">
+
+                <div style="position: absolute; width: 280px; left: -1px" id="namelist">
+                    <ul>
+
+                        <li style="width: 65px; margin-left: 3px;text-align:center; overflow: hidden;"><a
+                                href="http://weekly.hustnews.com/index/#"
+                                onclick="window.location.href='/page/{{ page_id }}';FirstLoad();return false;">
+                            <span style="color:#FFFD00">要闻</span></a></li>
+
+                        <li style="width: 65px; margin-left: 3px;text-align:center; overflow: hidden;"><a
+                                href="http://weekly.hustnews.com/index/#"
+                                onclick="window.location.href='/page/{{ page_id }}';FirstLoad();return false;">
+                            <span style="">综合</span></a></li>
+
+                        <li style="width: 65px; margin-left: 3px;text-align:center; overflow: hidden;"><a
+                                href="http://weekly.hustnews.com/index/#"
+                                onclick="window.location.href='/page/{{ page_id }}';FirstLoad();return false;">
+                            <span style="">视点</span></a></li>
+
+                        <li style="width: 65px; margin-left: 3px;text-align:center; overflow: hidden;"><a
+                                href="http://weekly.hustnews.com/index/#"
+                                onclick="window.location.href='/page/{{ page_id }}';FirstLoad();return false;">
+                            <span style="">副刊</span></a></li>
+
+                    </ul>
+                </div>
+
             </div>
             <div class="arrowright" style="cursor: pointer" onmouseover="pagemove('right')" onmouseout="delmove()">
                 <img src="/static/images/aright.png"/>
             </div>
         </div>
+
         <div>
             <div id="loading" style="width: 80px; margin-left: 50px; margin-top: 50px; display: none;
                     height: 380px">
                 加载中...
             </div>
             <div id="news">
+                {% block content %}
+                {% endblock %}
             </div>
         </div>
     </div>
