@@ -160,6 +160,11 @@ def article(article_id):
                            area_list=area_list)
 
 
+@app.route("/login")
+def login():
+    return render_template("login.html")
+
+
 if __name__ == '__main__':
     app.debug = True
     app.run(host='127.0.0.1', port=5000)
