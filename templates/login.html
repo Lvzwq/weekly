@@ -6,9 +6,9 @@
     <script type="text/javascript">
     function check(){
 
-    if(this.uid.value==null||this.uid.value==""){ alert("用户名不能为空");return false;}
-    if(this.pwd.value==null||this.pwd.value=="") {alert("密码不能为空");return false;}
-
+  //  if(this.uid.value==null||this.uid.value==""){ alert("用户名不能为空");return false;}
+    //if(this.pwd.value==null||this.pwd.value=="") {alert("密码不能为空");return false;}
+return true;
     }
     </script>
 
@@ -28,7 +28,15 @@
         </form>
     </div>
     <div>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul class=flashes>
+                     {% for message in messages %}
+                        <li>{{ message }}</li>
+             {% endfor %}
 
+  {% endif %}
+{% endwith %}
     </div>
 </body>
 </html>

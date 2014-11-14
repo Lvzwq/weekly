@@ -43,7 +43,7 @@
                 </option>
             {% endfor %}
         </select>
-        <pre>总{{ data['max_paper'] }}期 当前期数：<span id="span">第{{ data['current_page'] }}期</span></pre>
+        <pre>总{{ data['max_paper'] }}期 当前期数：<span id="span">第{{ data['current_paper'] }}期</span></pre>
     </div>
     <div class="baozhi" id="showpic">
 
@@ -56,7 +56,7 @@
                  id="div{{ area.article_id }}">
                 <div style="margin-left:15px"><img src="/static/images/tip.gif"></div>
                 <div style="background-color: #eb545d;color:#45070b; padding:8px;text-align:center;">
-                    <span style="font-size:14px;font-weight:bold">{{area.article_title}}}</span>
+                    <span style="font-size:14px;font-weight:bold">{{area.article_title}}</span>
                 </div>
             </div>
             <div style="cursor: pointer; position: absolute; left: {{area.x}}; top: {{area.y}}; width: {{area.width}}; height: {{area.height}};"
@@ -101,7 +101,17 @@
 
                 <div style="position: absolute; width: 280px; left: -1px" id="namelist">
                     <ul>
-
+                        {% for column in data.column_list %}
+                             <li style="width: 65px; margin-left: 3px;text-align:center; overflow: hidden;"><a
+                                  href="http://127.0.0.1:5000/page/{{ column['id'] }}"
+                                 onclick="window.location.href='/page/{{ column['id'] }}';FirstLoad();return false;">
+                             {% if data.current_page == column.id  %}
+                                <span style="color:#FFFD00">{{ column['name'] }}</span></a></li>
+                             {% else %}
+                                <span style="">{{ column['name'] }}</span></a></li>
+                            {% endif %}
+                        {% endfor %}
+                        <!--
                         <li style="width: 65px; margin-left: 3px;text-align:center; overflow: hidden;"><a
                                 href="http://weekly.hustnews.com/index/#"
                                 onclick="window.location.href='/page/{{ page_id }}';FirstLoad();return false;">
@@ -121,7 +131,7 @@
                                 href="http://weekly.hustnews.com/index/#"
                                 onclick="window.location.href='/page/{{ page_id }}';FirstLoad();return false;">
                             <span style="">副刊</span></a></li>
-
+                        -->
                     </ul>
                 </div>
 

@@ -2,6 +2,10 @@
 from sqlalchemy import *
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import func
+from sqlalchemy import update, delete, insert
+from datetime import datetime
+# from sqlalchemy.pool import NullPool
 
 from config.db import MYSQL_HOST, MYSQL_USER, MYSQL_DB, MYSQL_CHARSET, MYSQL_PASSWORD
 
@@ -9,7 +13,7 @@ from config.db import MYSQL_HOST, MYSQL_USER, MYSQL_DB, MYSQL_CHARSET, MYSQL_PAS
 
 # conn='mysql://root:root@localhost/newscenter?charset=utf8'
 conn = 'mysql://%s:%s@%s/%s?charset=%s' % (MYSQL_USER, MYSQL_PASSWORD, MYSQL_HOST, MYSQL_DB, MYSQL_CHARSET)
-engine = create_engine(conn, echo=True)
+engine = create_engine(conn, echo=True)  # 使用非连接池的方式连接数据库
 Base = declarative_base(engine)
 
 
@@ -74,7 +78,7 @@ class Model():
     def __init__(self):
         # moz_article = Table('article', metadata, autoload=True)
         # mapper(Article, moz_article)
-        metadata = MetaData(engine)
+        # metadata = MetaData(engine)
         session = sessionmaker(bind=engine)
         self.session = session()
 
@@ -88,12 +92,12 @@ class Model():
 
 
     def get_all_paper(self):
-        paper_list = self.session.query(Paper).order_by(desc(Paper.id)).all()
+        paper_list = self.session.query(Paper).filter(Paper.issued == 1).order_by(desc(Paper.id)).all()
         return paper_list
 
 
     def get_max_paper(self):
-        max = self.session.query(Paper.num, Paper.id).order_by(desc(Paper.id)).limit(1).all()
+        max = self.session.query(Paper.num, Paper.id).filter(Paper.issued == 1).order_by(desc(Paper.id)).limit(1).all()
         return max[0]
 
     def get_area_list(self, page_id):
@@ -108,26 +112,83 @@ class Model():
         page_info = self.session.query(Page).filter(Page.id == page_id).all()
         return page_info[0]
 
+    # 获得一篇文章的内容
     def get_article_info(self, article_id):
         article_info = self.session.query(Article).filter(Article.id == article_id).all()
         return article_info[0]
 
     def get_paper_info(self, paper_id):
         page_info = self.session.query(Paper.num).filter(Paper.id == paper_id).all()
-        return  page_info[0].num
+        return page_info[0].num
+
+    # 根据报纸id获得报纸页面id
+    def get_column_list(self, paper_id):
+        column_list = self.session.query(Page).filter(Page.paper_id == paper_id).all()
+        return column_list
+
+    # 后台管理页面获得报纸期数列表
+    def get_paper_list(self, offset=0, limit=20):
+        paper_list = self.session.query(Paper).order_by(desc(Paper.id)).limit(limit).offset(offset).all()
+        return paper_list
+
+    def get_paper_count(self):
+        num = self.session.query(func.count(Paper.id)).all()
+        return num[0][0]
+
+    # 新增一个期刊
+    def new_paper(self, paper_num):
+        is_exist = self.session.query(Paper.id).filter(Paper.num == paper_num).all()
+        if is_exist:
+            p = update(Paper).where(Paper.num == paper_num).values(time=datetime.now())
+            self.session.execute(p)
+            self.session.commit()
+        else:
+            paper = Paper()
+            paper.num = paper_num
+            paper.time = datetime.now()
+            paper.issued = 0
+            self.session.add(paper)
+            return self.session.commit()
+
+    # 删除报纸期刊
+    def delete_paper(self, paper_num):
+        is_exist = self.session.query(Paper.id).filter(Paper.num == paper_num).all()
+        if is_exist:
+            self.session.query(Paper).filter(Paper.num == paper_num).delete()
+            self.session.commit()
+        else:
+            return True
+
+    # 新增一篇文章
+    def insert_article(self, article_info):
+        sql = insert(Article, values=article_info)
+        self.session.execute(sql)
+        self.session.commit()
+
+    # 修改一篇文章
+    def update_article(self, article_id, article_info):
+        return update(Article).where(Article.id == article_id).values(article_info).execute()
+
+    #删除一篇文章
+    def delete_article(self, article_id):
+        return delete(Article, returning=Article.id, return_defaults=True).where(Article.id == article_id).execute()
+
+    def insert_area(self, area):
+        pass
 
     def close_session(self):
         self.session.close()
 
 
-'''
 if __name__ == '__main__':
     model = Model()
+    # print model.get_paper_count()
     # print model.get_article_list(555)
-    print model.get_max_paper().id
-    print
-    #for i in model.get_area_list(273):
-    #   print i.paper_id
-    #for i in model.get_all_paper():
+    # print model.get_max_paper().id
+    # print
+    # print model.delete_paper(508)
 
-'''
+    # for i in model.get_area_list(273):
+    # print i.paper_id
+    # for i in model.get_all_paper():
+
