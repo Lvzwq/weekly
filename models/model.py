@@ -13,7 +13,7 @@ from config.db import MYSQL_HOST, MYSQL_USER, MYSQL_DB, MYSQL_CHARSET, MYSQL_PAS
 
 # conn='mysql://root:root@localhost/newscenter?charset=utf8'
 conn = 'mysql://%s:%s@%s/%s?charset=%s' % (MYSQL_USER, MYSQL_PASSWORD, MYSQL_HOST, MYSQL_DB, MYSQL_CHARSET)
-engine = create_engine(conn, echo=True)  # 使用非连接池的方式连接数据库
+engine = create_engine(conn)  # 使用非连接池的方式连接数据库
 Base = declarative_base(engine)
 
 
@@ -120,6 +120,9 @@ class Model():
     def get_paper_info(self, paper_id):
         page_info = self.session.query(Paper.num).filter(Paper.id == paper_id).all()
         return page_info[0].num
+
+    def get_paper(self,paper_num):
+        return self.session.query(Paper).filter(Paper.num == paper_num).all()
 
     # 根据报纸id获得报纸页面id
     def get_column_list(self, paper_id):

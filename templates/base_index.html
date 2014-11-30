@@ -43,7 +43,7 @@
                 </option>
             {% endfor %}
         </select>
-        <pre>总{{ data['max_paper'] }}期 当前期数：<span id="span">第{{ data['current_paper'] }}期</span></pre>
+        <pre>总{{ data['max_paper'] }}期 当前期数：<span id="span">第{{ data['current_num'] }}期</span></pre>
     </div>
     <div class="baozhi" id="showpic">
 
@@ -111,27 +111,6 @@
                                 <span style="">{{ column['name'] }}</span></a></li>
                             {% endif %}
                         {% endfor %}
-                        <!--
-                        <li style="width: 65px; margin-left: 3px;text-align:center; overflow: hidden;"><a
-                                href="http://localhost:5000/page/{{ column_page_id[0] }}"
-                                onclick="window.location.href='/page/{{ page_id }}';FirstLoad();return false;">
-                            <span style="color:#FFFD00">要闻</span></a></li>
-
-                        <li style="width: 65px; margin-left: 3px;text-align:center; overflow: hidden;"><a
-                                href="http://localhost:5000/page/{{ column_page_id[1] }}"
-                                onclick="window.location.href='/page/{{ column_page_id[1] }}';FirstLoad();return false;">
-                            <span style="">综合</span></a></li>
-
-                        <li style="width: 65px; margin-left: 3px;text-align:center; overflow: hidden;"><a
-                                href="http://localhost:5000/page/{{ column_page_id[2] }}"
-                                onclick="window.location.href='/page/{{ column_page_id[2] }}';FirstLoad();return false;">
-                            <span style="">视点</span></a></li>
-
-                        <li style="width: 65px; margin-left: 3px;text-align:center; overflow: hidden;"><a
-                                href="http://localhost:5000/page/{{ column_page_id[3] }}"
-                                onclick="window.location.href='/page/{{ column_page_id[3] }}';FirstLoad();return false;">
-                            <span style="">副刊</span></a></li>
-                        -->
                     </ul>
                 </div>
 

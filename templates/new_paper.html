@@ -1,0 +1,8 @@
+{% extends 'base_admin.html' %}
+
+{% block content %}
+<form action="/upload" method="POST" enctype="multipart/form-data">
+        上传图片：<input type ='file' name="upload" />
+        <input type="submit" value ="提交" />
+</form>
+{% endblock %}

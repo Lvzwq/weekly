@@ -6,7 +6,7 @@
 
         {% for article in article_list %}
 
-        <li><a href=""
+        <li><a href="{{ url_for('article',article_id=article.id) }}"
                onclick="window.location.href='/article/{{article.id}}';;FirstLoad();return false; ">
             {{article.title}}</a>
         </li>
