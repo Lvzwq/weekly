@@ -529,6 +529,7 @@ body {
     }
 }
 .weekly__main-left{
+    position : absolute;
     width : 421px;
     margin-top : -29px;
 }
@@ -544,6 +545,7 @@ body {
 }
 #weekly-select{
     margin-right : 20px;
+    color : #000;
 }
 .weekly__newspaper-container{
     position : relative;
@@ -574,8 +576,8 @@ body {
     position : absolute;
     top : -9px;
     left : 20px;
-    width : 0px;
-    height : 0px;
+    width : 0;
+    height : 0;
     border-style : solid;
     border-width : 0 9px 9px 9px;
     border-color : transparent transparent #eb545b transparent;

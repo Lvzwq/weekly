@@ -43,16 +43,19 @@
             <div class="weekly__main-left fleft">
                 <div class="weekly__main-select">
                     <select name="weekly-select" id="weekly-select">
-                        <option value="0" selected="selected">---请选择期数---</option>
+                        <option value="0" selected disabled>---请选择期数---</option>
                         <option value="123">2014年2月38日 第232期</option>
-                        <option value="123">2014年2月38日 第232期</option>
-                        <option value="123">2014年2月38日 第232期</option>
-                        <option value="123">2014年2月38日 第232期</option>
+                        <option value="12">2014年2月38日 第232期</option>
+                        <option value="1">2014年2月38日 第232期</option>
+                        <option value="1234">2014年2月38日 第232期</option>
                     </select>
                     <span class="weekly__main-info">总513期，当前期数：222期</span>
                 </div>
                 <div class="weekly__newspaper-container">
-                    <img id="newspaper" class="weekly__newspaper-img" src="http://weekly.hustnews.com/index/pic/2014/12/1023.jpg" alt=""/>
+                    <div id="newspaper-container">
+                        <img id="newspaper" class="weekly__newspaper-img" src="http://weekly.hustnews.com/index/pic/2014/12/1023.jpg" alt=""/>
+                    </div>
+
                     <div class="weekly__newspaper-mask">
                         <div id="newsblock1" class="weekly__newsblock">
                             <div class="weekly__newsblock-info">
@@ -77,11 +80,11 @@
                     <span class="weekly__time fright">当前日期：2014年12月13日  星期六</span>
                 </div>
                 <div class="weekly__content-wrap">
-                    <nav class="weekly__content-nav">
+                    <nav id="content-nav" class="weekly__content-nav">
                         <span>版面导航</span>
                         <div class="weekly__nav-wrap">
                             <span class="weekly__nav-left"></span>
-                            <ul>
+                            <ul id="navlist">
                                 <li class="weekly__nav-item selected">要闻</li>
                                 <li class="weekly__nav-item">综合</li>
                                 <li class="weekly__nav-item">视点</li>
@@ -90,7 +93,7 @@
                             <span class="weekly__nav-right"></span>
                         </div>
                     </nav>
-                    <div class="weekly__content">
+                    <div id="content" class="weekly__content">
                         <!--列表-->
                         <ul class="weekly__content-list">
                             <li class="weekly__content-listitem"><a href="#">《华中科技大学章程》获核准</a></li>
