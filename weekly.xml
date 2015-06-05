@@ -4,7 +4,7 @@
     <pythonpath>/var/www/zhangwenqiang/weekly.hustonline.net/weekly</pythonpath>
     <module>application</module>
     <callable>app</callable>
-    <socket>/tmp/uwsgi_shike.sock</socket>
+    <socket>/tmp/weekly.sock</socket>
     <!--<virtualenv>/var/www/shike.hustonline.net/foodie/env/</virtualenv>-->
     <uid>www-data</uid>
     <gid>www-data</gid>

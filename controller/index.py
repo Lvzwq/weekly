@@ -2,9 +2,8 @@
 from flask import (render_template, Blueprint, abort, redirect, url_for)
 from models.model import Model
 from models.helper import *
-from config import appconfig
 
-app = Blueprint("app", __name__)
+app = Blueprint("index", __name__)
 
 
 # paper 13-273
