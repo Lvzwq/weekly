@@ -1,8 +1,78 @@
-{% extends 'base_admin.html' %}
+{% extends 'base/base.html' %}
 
+{% block titie %}发布新期刊{% endblock %}
 {% block content %}
-<form action="/upload" method="POST" enctype="multipart/form-data">
-        上传图片：<input type ='file' name="upload" />
-        <input type="submit" value ="提交" />
-</form>
+    <div class="form-group add-paper col-lg-offset-1 {% if not new %}is-add {% endif %}">
+        <label for="paper_num" class="label-text">请输入期数:</label>
+        <div class="col-lg-1">
+            <input type="text" class="form-control input-sm" id="paper-num"
+                   value="{% if new %}{{ paper_info.new_paper_num }}{% else %}{{ paper_info.num }}{% endif %}"
+                   placeholder="期数">
+        </div>
+        <label for="paper_num" class="label-text">时间:</label>
+        <div class="col-lg-2">
+            <input type="text" class="form-control input-sm" id="pub-time"
+                   value="{% if new %}{{ paper_info.current_time }}{% else %}{{ paper_info.time | format_time }}{% endif %}"
+                   placeholder="发布时间">
+        </div>
+        <button class="btn btn-success btn-sm">确 认</button>
+    </div>
+    {% if new %}
+    <div class="form-group col-lg-offset-1 jump-paper">
+        <div class="col-lg-2">
+            <input type="text" class="form-control input-sm jump-paper-num" placeholder="请输入需要编辑的期数"/>
+        </div>
+    <button class="btn btn-success btn-sm">转入</button>
+    </div>
+    {% endif %}
+
+    <div class="form-group current-paper {% if new %}is-add{% endif %}">
+        <label for="paper_num">当前期数为第【<span class="label-paper-num">{% if new %}{{ paper_info.new_paper_num }}{% else %}
+            {{ paper_info.num }}{% endif %}</span>】期 &nbsp;&nbsp;发布时间为:【<span class="label-pub-time">{% if new %}
+            {{ paper_info.current_time }}{% else %}{{ paper_info.time | format_time }}{% endif %}</span>】</label>
+        <button class="btn btn-success btn-sm">修 改</button>
+    </div>
+
+    <div class="form-group col-lg-offset-1 add-page {% if new %}is-add{% endif %}">
+        <div>
+            <label for="paper_num" class="label-text">版数:</label>
+
+            <div class="col-lg-1">
+                <input type="text" class="form-control input-sm" placeholder="版数" id="adding-page-num">
+            </div>
+            <div class="col-lg-1">
+                <input type="text" class="form-control input-sm" placeholder="名称" id="adding-page-name">
+            </div>
+            <button class="btn btn-success btn-sm">确 认</button>
+        </div>
+    </div>
+
+    <div class="form-group col-lg-offset-1 add-file is-add" data-id="">
+        <div>
+            <label for="page_num">版数:&nbsp;&nbsp; <span class="label-num"></span></label><br>
+            <label for="page_name">名称: <span class="label-name"></span></label>
+            <button class="btn btn-success btn-sm">修 改</button>
+        </div>
+        <div class="col-lg-2">
+            <input type="file" id="inputFile"/>
+        </div>
+    </div>
+    <div style="clear: both"></div>
+    <div class="pages">
+        <ul>
+            {% for page in pages %}
+                <li>
+                    <lable for="show-page-info">{{ page.num }} -- {{ page.name }}</lable>
+                    <div class="page-item" data-id="{{ page.id }}" data-num="{{ page.num }}" data-name="{{ page.name }}">
+                        <a href="/admin/edit/page/{{ page.id }}"><img src="{{ page.pic }}" class="page_img"/></a>
+                    </div>
+                    <button class="btn btn-primary">编辑</button>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+
+
+
 {% endblock %}

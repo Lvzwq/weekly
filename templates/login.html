@@ -1,42 +1,35 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <title>登录</title>
-
-    <script type="text/javascript">
-    function check(){
-
-  //  if(this.uid.value==null||this.uid.value==""){ alert("用户名不能为空");return false;}
-    //if(this.pwd.value==null||this.pwd.value=="") {alert("密码不能为空");return false;}
-return true;
-    }
-    </script>
-
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>华中科技大学校报</title>
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="/static/css/flat-ui.min.css" rel="stylesheet" type="text/css">
+    <link href="/static/css/common.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-    <div style="text-align: center">
-        <div>
-            登录</div>
-        <hr />
-        <form onsubmit="return check.call(this);" action="/login" method="post">
-            <div>
-                用户名:<input type="text" name="uid" /></div>
-            <div style ="margin-top :8px">
-                密&nbsp;&nbsp;&nbsp; 码:<input type="password" name="pwd" /></div>
-            <div style ="margin-top:8px">
-                <input type="submit" value="登录" /></div>
-        </form>
-    </div>
+<div class="container">
     <div>
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    <ul class=flashes>
-                     {% for message in messages %}
-                        <li>{{ message }}</li>
-             {% endfor %}
-
-  {% endif %}
-{% endwith %}
+        <div class="login-text col-xs-5 col-lg-offset-3"><p>校报后台登录</p></div>
+        <div class="login-item col-xs-5 col-md-offset-3">
+            <div class="message">Message</div>
+              <div class="login-form">
+                    <div class="form-group">
+                      <input type="text" class="form-control login-field" value="" placeholder="Enter your name" id="login-name" />
+                      <label class="login-field-icon fui-user" for="login-name"></label>
+                    </div>
+                    <div class="form-group">
+                      <input type="password" class="form-control login-field" value="" placeholder="Password" id="login-pass" />
+                      <label class="login-field-icon fui-lock" for="login-pass"></label>
+                    </div>
+                <a class="btn btn-primary btn-lg btn-block" href="#" id="login-button">登 录</a>
+                <a class="login-link" href="#">Lost your password?</a>
+              </div>
+        </div>
     </div>
+</div>
+    <script type="text/javascript" src="/static/js/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/js/flat-ui.min.js"></script>
+    <script type="text/javascript" src="/static/js/index.js"></script>
 </body>
 </html>

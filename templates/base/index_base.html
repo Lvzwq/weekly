@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>华中科技大学校报</title>
+    <link href="/static/css/index.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div class="head">
+    <div class="head1">
+        <ul>
+            <li><a href="#" onclick="return HomePage.call(this);">
+                设为主页</a></li>
+            <li><a href="#" onclick="return Love();">加入收藏</a></li>
+            <li><a href="http://weekly.hustnews.com/text/" target="_blank">旧版入口</a></li>
+        </ul>
+    </div>
+    <div class="nouse">
+        <img alt="fdsf" src="/static/images/bar2.jpg"/>
+    </div>
+    <div class="head3">
+        <pre>中共华中科技大学委员会主办 国内统一刊号：CN-0802/（G）</pre>
+        <img src="/static/images/logo.png"/>
+    </div>
+</div>
+<div style="clear: both">
+</div>
+<!--左侧图片显示-->
+<div class="left">
+  {% block left %}
+    {% endblock %}
+</div>
+<!-- 右侧内容页-->
+<div class="right" id="righttext">
+    {% block right %}
+    {% endblock %}
+</div>
+
+<div style="clear: both;">
+</div>
+<div class="tail">
+        <pre>华中科技大学校报编辑部出版  邮箱：xbbjb@mail.hust.edu.cn  电话：027-87542701  传真：027-87541544
+地址：华中科技大学新闻中心四楼  邮编：430074
+版权所有&copy;1999-2008    <a href="http://www.bingyan.net/" target="_blank">冰岩作坊</a> 制作维护</pre>
+</div>
+    <script type="text/javascript" src="/static/js/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/js/index.js"></script>
+</body>
+</html>

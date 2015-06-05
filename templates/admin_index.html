@@ -1,0 +1,33 @@
+{% extends "base/admin_base.html" %}
+{% block content %}
+<div class="right">
+        {% if paper_info %}
+        <div><span class="current-paper">当前第{{ paper_info.num }}期  --发布时间: {{ paper_info.time | format_time }}</span></div>
+        {% else %}
+             <div><span class="current-paper">暂没有该期报刊信息</span></div>
+        {% endif %}
+        <div>
+            <ul>
+                {% for page in data.page_list %}
+                    <div class="page-edit-item">
+                    <li>
+                        <p class="item-show"><span>{{ page.num }}版:{{ page.name }}</span>
+                            <a href="#" class="update" data-page-num="{{ page.num }}" data-page-name="{{ page.name }}">[修改]</a>
+                        </p>
+                        <p class="item-hidden">
+                            <input type="text" value="{{ page.num }}" class="page-num-value" size="3" />
+                            <input type="text" value="{{ page.name }}" class="page-name-value" size="3" />
+                            <a href="#" class="save">[保存]</a><a href="#" class="cancel">[取消]</a>
+                        </p>
+                        <a href="/admin/edit/page/{{ page.id }}"><img src="{{ page.pic }}" class="page_img" /></a>
+                    <p>
+                        <button class="btn btn-danger">删 除</button>
+                        <button class="btn btn-primary">编 辑</button>
+                    </p>
+                    </li>
+                    </div>
+                    {% endfor %}
+            </ul>
+        </div>
+</div>
+{% endblock %}

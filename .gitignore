@@ -2,7 +2,7 @@ db.py
 .idea/
 .idea/*
 *.pyc
-
+/static/upload/*
 # Created by .gitignore support plugin (hsz.mobi)
 
 # Created by https://www.gitignore.io
@@ -76,3 +76,5 @@ node_modules/
 build/
 
 .gitignore
+
+newspaper.sql

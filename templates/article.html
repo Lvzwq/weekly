@@ -1,0 +1,99 @@
+{% extends 'base/index_base.html' %}
+
+{% block left %}
+    <div class="select">
+        <select class="s" id="select1" name="Select1" onchange="changePaper(this.options[this.selectedIndex].value)">
+            <option value="0">----请选择期数----</option>
+            {% for paper in paper_list %}
+                <option value="{{ paper['id'] }}" qs="第{{ paper['num'] }}期">{{ paper['pub_time'] }} 第{{ paper['num'] }}期
+                </option>
+            {% endfor %}
+        </select>
+        <pre>总{{ data['max_paper_num'] }}期 当前期数：<span id="span">第{{ data['current_num'] }}期</span></pre>
+    </div>
+    <div class="baozhi" id="showpic">
+        <div style="background-image: url({{ data['pic_url'] }}); background-repeat:no-repeat; position: relative; width: 409px; height: 597px;">
+            <div style="width:100%;height:100%;background: url(/static/images/banner.gif) no-repeat;"></div>
+            {% for area in area_list %}
+                <div style="position: absolute; display: none; top: {{ area.title_y }}; left: {{ area.x }}; z-index: 22; font-size: 12px; width: 210px;"
+                     id="div{{ area.article_id }}">
+                    <div style="margin-left:15px"><img src="/static/images/tip.gif"></div>
+                    <div style="background-color: #eb545d;color:#45070b; padding:8px;text-align:center;">
+                        <span style="font-size:14px;font-weight:bold">{{ area.article_title }}</span>
+                    </div>
+                </div>
+                <div style="cursor: pointer; position: absolute; left: {{ area.x }}; top: {{ area.y }}; width: {{ area.width }}; height: {{ area.height }};"
+                     onmouseover="this.style.border='red 2px solid';document.getElementById('div{{ area.article_id }}').style.display='block';"
+                     onmouseout="this.style.border='';document.getElementById('div{{ area.article_id }}').style.display='none';"
+                     onclick="window.location.href='/article/{{ area.article_id }}';">
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block right %}
+    <form action="" onsubmit="return KeySearch();" class="search">
+        <div class="fdj"><img src="/static/images/fdj.png"/></div>
+        <div><input class="Checkbox1" type="text" id="keyword"/></div>
+        <div class="ss" style="cursor: pointer">
+            <input type="image" src="/static/images/ss.png"/></div>
+        <div class="dqrq">
+            <pre>当前日期：{{ data['now'] }} 星期{{ data['week'] }}</pre>
+        </div>
+        <div style="clear: both"></div>
+    </form>
+
+    <div class="text">
+        <div class="yumen">
+            <div class="bmdh">
+                <p>版面导航</p>
+            </div>
+            <div class="arrowleft" id="scrollleft" style="cursor: pointer;">
+                <img src="/static/images/aleft.png"/>
+            </div>
+            <div class="B" style="float: left; width: 300px; position: relative; overflow: hidden" id="pagename">
+                <div style="position: absolute; width: 280px; left: -1px" id="namelist">
+                    <ul>
+                        {% for column in data.column_list %}
+                            <li style="width: 65px; margin-left: 3px;text-align:center; overflow: hidden;">
+                                <a href="/page/{{ column['id'] }}"
+                                    onclick="window.location.href='/page/{{ column['id'] }}';return false;">
+                                {% if data.current_page == column.id %}
+                                    <span style="color:#FFFD00">{{ column['name'] }}</span>
+                                {% else %}
+                                    <span style="">{{ column['name'] }}</span>
+                                {% endif %}
+                            </a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="arrowright" style="cursor: pointer" onmouseover="pagemove('right')" onmouseout="delmove()">
+                <img src="/static/images/aright.png"/>
+            </div>
+        </div>
+        <div>
+            <div id="news">
+                 <div class="p">
+                    <div style="font-size: 14px;text-align:right;padding-bottom:20px;padding-right:20px;">
+                        <a href="{{ url_for("app.index") }}"
+                           onclick="window.location.href='/page/{{page_id}}}';FirstLoad();return false;"
+                           style="color: #d2691e" onmouseover="this.style.color='red'"
+                           onmouseout="this.style.color='#d2691e'">返回</a>
+                    </div>
+                    <div style="text-align:center;">
+                        <!--引题-->
+                        <div style="font-size:22px;font-weight:bold;padding:10px 0pt;">{{article.title}}</div>
+                    </div>
+                    <div class="newscontent">
+                        {% autoescape false %}
+                        {{article.content}}
+                        {% endautoescape %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

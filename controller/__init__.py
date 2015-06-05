@@ -1,61 +1,26 @@
 # -*- coding: utf-8 -*-
-from flask import Flask
-from config.appconfig import Config
-from flask import session
-import hashlib
-import json
-
+from controller import index, admin
+from flask import Flask, render_template
+from config import appconfig, web_root
+import os
 
 app = Flask(__name__)
-app.config.from_object(Config)
-app.template_folder = app.config['TEMPLATE_FOLDER']
-app.static_folder = app.config['STATIC_PATH']
-__all__ = ['index', 'admin']
+# app.default_config.update(appconfig)
+app.template_folder = os.path.join(web_root, appconfig['template_folder'])
+app.static_folder = os.path.join(web_root, appconfig['static_path'])
+app.secret_key = appconfig['secret_key']
+app.permanent_session_lifetime = 7200
+app.register_blueprint(index.app)
+app.register_blueprint(admin.app)
 
 
-def is_login():
-    if not session.get('uid') or not session.get('logged'):
-        return False
-    else:
-        uid = session.get('uid')
-        logged = session.get('logged')
-        if uid == hashlib.md5(app.config['ADMIN_USER']).hexdigest() and logged == 1:
-            return True
-        else:
-            return False
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
 
 
-def do_signin(username, password):
-    if username != '' and username == app.config['ADMIN_USER']:
-        if password != '' and password == app.config['ADMIN_PWD']:
-            return json.dumps({'status': True, 'msg': '登录成功'})
-        else:
-            return json.dumps({'status': False, 'msg': '密码错误'})
-    else:
-        return json.dumps({'status': False, 'msg': '用户名错误!'})
-
-
-def check_param(param):
-    # 初始化
-    paper_num = param.get('paper_num')
-    pid = param.get('pid')
-    limit = app.config['PAPER_LIMIT']
-    prev = 1
-    next = 2
-    current_id = 1
-    if not paper_num or not paper_num.isdigit():
-        paper_num = None
-    if param.get('limit') and param.get('limit').isdigit():
-        limit = param.get('limit')
-    if pid and pid.isdigit():
-        current_id = int(pid)
-        prev = current_id - 1
-        next = current_id + 1
-    return {'prev': prev, 'next': next, 'current_id': current_id, 'limit': limit, 'paper_num': paper_num}
-
-
-
-
-
-
-
+@app.template_filter("format_time")
+def format_time(time_str):
+    if time_str is None:
+        return None
+    return time_str.strftime("%Y-%m-%d")

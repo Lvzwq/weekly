@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="/static/css/flat-ui.min.css" rel="stylesheet" type="text/css">
+    <link href="/static/css/common.css" rel="stylesheet" type="text/css">
+    <title>校报后台</title>
+</head>
+<body>
+<nav class="navbar navbar-inverse" role="navigation">
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
+      <span class="sr-only">Toggle navigation</span>
+    </button>
+    <a class="navbar-brand" href="/">校报首页</a>
+  </div>
+  <div class="collapse navbar-collapse" id="navbar-collapse-01">
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="/admin/index">后台首页</a></li>
+      <li><a href="/admin/add_paper">添加新一期</a></li>
+         <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+               用户设置
+               <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+               <li class="divider"></li>
+               <li><a href="/admin/logout">退出登录</a></li>
+               <li class="divider"></li>
+               <li><a href="/admin/updatePassword">修改密码</a></li>
+            </ul>
+         </li>
+    </ul>
+  </div>
+</nav>
+
+
+<div class="left">
+    <div class="pagination pagination-success pager">
+          <a href="/admin/index?pid={{ data.prev }}" class="btn btn-success previous">上页</a>
+          <ul>
+            <li><a href="/admin/index">首页</a></li>
+            <li><a href="/admin/index?pid={{ data.count }}">末页</a></li>
+          </ul>
+          <a href="/admin/index?pid={{ data.next }}" class="btn btn-success next">下页</a>
+    </div>
+    <ul>
+        {% for paper in data.paper_list %}
+        <li>
+            <div class="paper-item">
+                <button class="btn btn-primary"><a href="/admin/index?pid={{ data.current_id }}&paper_num={{ paper.num }}">第{{ paper.num }}期</a></button>
+                <span class="bootstrap-switch-square">
+                    <input type="checkbox" {% if paper.issued == 1 %} checked {% endif %} data-toggle="switch" name="custom-switch-text" data-on-text="已发布" data-off-text="未发布" id="switch-{{ paper.id }}" />
+                </span>
+                <button class="btn btn-danger delete-paper" data-id="{{ paper.num }}">删除</button>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <div class="pagination pagination-success pager">
+          <a href="/admin/index?pid={{ data.prev }}" class="btn btn-success previous">上页</a>
+          <ul>
+            <li><a href="/admin/index">首页</a></li>
+            <li><a href="/admin/index?pid={{ data.count }}">末页</a></li>
+          </ul>
+          <a href="/admin/index?pid={{ data.next }}" class="btn btn-success next">下页</a>
+    </div>
+</div>
+{% block content %}
+{% endblock %}
+    <script type="text/javascript" src="/static/js/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/js/flat-ui.min.js"></script>
+    <script type="text/javascript" src="/static/js/admin.js"></script>
+</body>
+</html>
