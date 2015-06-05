@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from controller import index, admin
 from flask import Flask, render_template
+from controller import index, admin
 from config import appconfig, web_root
 import os
 
@@ -10,8 +10,9 @@ app.template_folder = os.path.join(web_root, appconfig['template_folder'])
 app.static_folder = os.path.join(web_root, appconfig['static_path'])
 app.secret_key = appconfig['secret_key']
 app.permanent_session_lifetime = 7200
-app.register_blueprint(index.app)
 app.register_blueprint(admin.app)
+app.register_blueprint(index.app)
+
 
 
 @app.errorhandler(404)

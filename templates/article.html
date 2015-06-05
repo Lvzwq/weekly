@@ -5,7 +5,7 @@
         <select class="s" id="select1" name="Select1" onchange="changePaper(this.options[this.selectedIndex].value)">
             <option value="0">----请选择期数----</option>
             {% for paper in paper_list %}
-                <option value="{{ paper['id'] }}" qs="第{{ paper['num'] }}期">{{ paper['pub_time'] }} 第{{ paper['num'] }}期
+                <option value="{{ paper.id }}" qs="第{{ paper.num }}期">{{ paper.pub_time }} 第{{ paper.num }}期
                 </option>
             {% endfor %}
         </select>
@@ -78,7 +78,7 @@
             <div id="news">
                  <div class="p">
                     <div style="font-size: 14px;text-align:right;padding-bottom:20px;padding-right:20px;">
-                        <a href="{{ url_for("app.index") }}"
+                        <a href="{{ url_for("index.index") }}"
                            onclick="window.location.href='/page/{{page_id}}}';FirstLoad();return false;"
                            style="color: #d2691e" onmouseover="this.style.color='red'"
                            onmouseout="this.style.color='#d2691e'">返回</a>

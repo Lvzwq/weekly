@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+#!/usr/bin/python env
+# coding: utf-8
 from controller import app
 
 

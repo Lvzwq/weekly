@@ -1,10 +1,9 @@
-# -*- coding: utf-8 -*-
-from flask import (render_template, Blueprint, abort, redirect, url_for)
+# coding: utf-8
+from flask import (Blueprint, render_template, abort, redirect, url_for)
 from models.model import Model
 from models.helper import *
 
 app = Blueprint("index", __name__)
-
 
 # paper 13-273
 # paper 表中num 284-508
@@ -21,8 +20,8 @@ def index():
     area_list = model.get_area_list(page_info.id)
     # 格式化日期时间
     for i in range(len(paper_list)):
-        paper_list[i].pub_time = paper_list[i].time.strftime('%Y年%m月%d日')
-    data = dict(now=datetime.now().strftime('%Y年%m月%d日'))
+        paper_list[i].pub_time = paper_list[i].time.strftime("%Y年%m月%d日").decode("utf-8")
+    data = dict(now=datetime.now().strftime("%Y年%m月%d日").decode("utf-8"))
     data['week'] = format_week()
     # 格式化大图片链接
     data['max_paper_num'] = paper_list[0].num
@@ -47,7 +46,7 @@ def paper(paper_id):
     page_info = model.get_pic_info(paper_id, 1)
     if page_info is None:
         abort(404)
-    return redirect(url_for("app.page", page_id=page_info.id))
+    return redirect(url_for("index.page", page_id=page_info.id))
 
 
 @app.route('/page/<int:page_id>')
@@ -61,8 +60,8 @@ def page(page_id):
     column_list = model.get_column_list(page_info.paper_id)
     # 格式化日期时间
     for i in range(len(paper_list)):
-        paper_list[i].pub_time = paper_list[i].time.strftime('%Y年%m月%d日')
-    data = dict(now=datetime.now().strftime('%Y年%m月%d日'))
+        paper_list[i].pub_time = paper_list[i].time.strftime('%Y年%m月%d日').decode("utf-8")
+    data = dict(now=datetime.now().strftime('%Y年%m月%d日').decode("utf-8"))
     data['week'] = format_week()
     # 格式化大图片链接
     data['max_paper_num'] = paper_list[0].num
@@ -78,9 +77,10 @@ def page(page_id):
     return render_template("index.html", paper_list=paper_list, area_list=area_list, data=data,
                            article_list=article_list)
 
+
 @app.route('/article/<int:article_id>')
 def article(article_id):
-    data = dict(now=datetime.now().strftime('%Y年%m月%d日'))
+    data = dict(now=time_to_str(format='%Y年%m月%d日'))
     data['week'] = format_week()
     model = Model()
     try:
@@ -89,7 +89,7 @@ def article(article_id):
         abort(404)
     paper_list = model.get_all_paper()
     for i in range(len(paper_list)):
-        paper_list[i].pub_time = paper_list[i].time.strftime('%Y年%m月%d日')
+        paper_list[i].pub_time = time_to_str(paper_list[i].time, format='%Y年%m月%d日')
     page_info = model.get_page_info(article_info.page_id)
     column_list = model.get_column_list(page_info.paper_id)
 

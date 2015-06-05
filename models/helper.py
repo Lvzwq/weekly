@@ -8,9 +8,12 @@ import decimal
 
 
 def format_week(week=datetime.now().isoweekday()):
-    weekly = ['日', '一', '二', '三', '四', '五', '六', '日']
-    print week
+    weekly = [u'日', u'一', u'二', u'三', u'四', u'五', u'六', u'日']
     return weekly[week]
+
+
+def time_to_str(tm=datetime.now(), format="%Y-%m-%d %H:%M:%S"):
+    return tm.strftime(format).decode("utf-8")
 
 
 def response_with_json(data, code=1):
@@ -112,10 +115,6 @@ def divide_area(area_list):
 
 def update_pic_url(pic_url):
     return appconfig['host'] + "/Newspaper/paper" + pic_url[3:]
-
-
-def time_to_str(tm=datetime.now(), format="%Y-%m-%d %H:%M:%S"):
-    return tm.strftime(format)
 
 
 def mk_file_dir():

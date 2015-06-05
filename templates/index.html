@@ -5,7 +5,7 @@
         <select class="s" id="select1" name="Select1" onchange="changePaper(this.options[this.selectedIndex].value)">
             <option value="0">----请选择期数----</option>
             {% for paper in paper_list %}
-                <option value="{{ paper['id'] }}" qs="第{{ paper['num'] }}期">{{ paper['pub_time'] }} 第{{ paper['num'] }}期
+                <option value="{{ paper.id }}" qs="第{{ paper.num }}期">{{ paper.pub_time }} 第{{ paper.num }}期
                 </option>
             {% endfor %}
         </select>

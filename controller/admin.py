@@ -179,7 +179,6 @@ def get_article(article_id):
     """获得一篇文章的信息"""
     model = Model()
     article_info = model.get_article_info(article_id)
-    print article_info, article_info.__dict__
     article = dict(id=article_info.id, content=article_info.content,
                    title=article_info.title, sub_title=article_info.sub_title,
                    time=time_to_str(article_info.time), author=article_info.author,
@@ -203,6 +202,7 @@ def paper_delete():
     model = Model()
     model.close_session()
     return response_with_json("删除成功")
+
 
 @app.route("/update/<int:article_id>")
 def update(article_id):
