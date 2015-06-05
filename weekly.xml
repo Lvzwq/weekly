@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<uwsgi>
+    <chdir>/var/www/zhangwenqiang/weekly.hustonline.net/weekly</chdir>
+    <pythonpath>/var/www/zhangwenqiang/weekly.hustonline.net/weekly</pythonpath>
+    <module>application</module>
+    <callable>app</callable>
+    <socket>/tmp/uwsgi_shike.sock</socket>
+    <!--<virtualenv>/var/www/shike.hustonline.net/foodie/env/</virtualenv>-->
+    <uid>www-data</uid>
+    <gid>www-data</gid>
+    <chmod-socket>777</chmod-socket>
+    <chown-socket>www-data</chown-socket>
+    <enable-threads>true</enable-threads>
+    <processes>4</processes>
+    <daemonize>/var/www/zhangwenqiang/weekly.hustonline.net/weekly/%n.log</daemonize>
+    <memory-report/>
+</uwsgi>
