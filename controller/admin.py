@@ -5,6 +5,7 @@ from flask import (render_template, request, redirect, url_for, abort)
 from models.model import Model
 from models.helper import *
 from models.url import (login_required, do_signin, is_login, destroy_session, set_login)
+from config import appconfig
 
 app = Blueprint("admin", __name__)
 
@@ -73,22 +74,25 @@ def file_upload():
     ckeditor = request.args.get("CKEditor")
     ckeditor_func_name = request.args.get("CKEditorFuncNum")
     print ckeditor, ckeditor_func_name
-    print "request.files=", request.files
-    print dir(request.files)
+
     fileobj = request.files.get("upload")
     print "fileobj=", fileobj, dir(fileobj)
-    file_path = mk_file_dir()
-    filename = save_file(fileobj, upload_folder=file_path)
-    filename += '/static/upload/'
+    is_saved = save_file(fileobj)
+    if is_saved['status']:
+        error = ""
+        url = is_saved["result"][0]
+    else:
+        error = is_saved["result"]
+        url = ""
     return """<script type="text/javascript">
-                window.parent.CKEDITOR.tools.callFunction(%s, '%s', '%s');
-              </script>""" % (ckeditor_func_name, filename, "")
+            window.parent.CKEDITOR.tools.callFunction(%s, '%s', '%s');
+          </script>""" % (ckeditor_func_name, url, error)
 
 
 @app.route("/admin/add_paper", methods=['GET'])
 @login_required
 def add_paper():
-    """添加新的一期"""
+    """新的期刊"""
     new = False  # 是添加新的期刊还是修改期刊
     pages = []
     model = Model()
@@ -106,14 +110,13 @@ def add_paper():
         for i in range(len(pages)):
             pages[i].pic = update_pic_url(pages[i].pic_url)
         model.close_session()
-        print pages
     return render_template("new_paper.html", paper_info=paper_info, new=new, pages=pages)
 
 
 @app.route("/admin/add_paper", methods=['POST'])
 @login_required
 def new_paper():
-    """提交新的一期数据到数据库."""
+    """提交新的期刊数据到数据库."""
     paper_num = request.form.get("paper_num")
     pub_time = request.form.get("pub_time")
     values = parse_param(params=["paper_num", "pub_time"],
@@ -134,10 +137,10 @@ def new_paper():
 @app.route("/admin/image/upload", methods=['POST'])
 @login_required
 def image_upload():
-    """报刊中的大图上传"""
+    """报刊中的大图上传以及新增报刊"""
     page_id = request.form.get("page_id")
     page_num = request.form.get("page_num")
-    page_name = request.form.get("page_name")
+    page_name = request.form.get("page_name").encode("utf-8")
     paper_num = request.args.get("paper_num")
     values = parse_param(params=["page_id", "page_num", "page_name", "paper_num"],
                          param_values=[page_id, page_num, page_name, paper_num],
@@ -145,18 +148,74 @@ def image_upload():
                          param_types=[int, int, str, int],
                          param_default=dict(page_id=0))
     if not values["status"]:
-        return response_with_json(value["msg"], -1)
-    print values
+        return response_with_json(values["msg"], -1)
     model = Model()
-    paper = model.get_paper(values["msg"]["paper_num"])
-    if paper is None:
-        return response_with_json("期刊还没有创建，不能添加报刊", -1)
+    paper_info = model.get_paper(values['msg']["paper_num"])
+    if paper_info is None:
+        return response_with_json("期刊不存在", -1)
+    # 上传图片处理
     file_data = request.files.get("Filedata")
-    filename = request.form.get("Filename")  # 原图片名
-    print "file_data=", file_data
+    model = Model()
+    if values["msg"]["page_id"] == 0:  # 新增一张报刊
+        page = model.new_page(paper_info.id,
+                              values["msg"]["page_num"], "",
+                              values["msg"]["page_name"])
+        if page.id is None:
+            return response_with_json("添加失败，请重试", -1)
+        values["msg"]["page_id"] = str(page.id)
+        upload_dir = save_file(file_data, filename=str(page.id))
+    else:  # 修改报刊
+        upload_dir = save_file(file_data, filename=str(page_id))
+    if not upload_dir["status"]:  # 上传失败
+        return response_with_json(upload_dir["result"], -1)
+    model.update_page(values["msg"]["page_id"],
+                      paper_id=paper_info.id,
+                      num=values['msg']["page_num"],
+                      pic_url=upload_dir["result"][1],
+                      name=values["msg"]["page_name"])
+    return response_with_json("操作成功")
 
-    """每期报刊的图片"""
-    return "1"
+
+@app.route("/admin/page", methods=['POST'])
+def page_add():
+    return
+
+
+@app.route("/admin/updatePage", methods=["POST"])
+@login_required
+def update_page():
+    """更新报刊"""
+    page_id = request.form.get("page_id")
+    page_num = request.form.get("page_num")
+    page_name = request.form.get("page_name").encode("utf-8")
+    values = parse_param(params=["page_id", "page_num", "page_name"],
+                         param_values=[page_id, page_num, page_name],
+                         param_types=[int, int, str],
+                         param_required=[True, True, True])
+    if values["status"]:
+        print values
+        model = Model()
+        model.update_page(values["msg"]["page_id"],
+                          num=values["msg"]["page_num"],
+                          name=values["msg"]["page_name"])
+        return response_with_json("更新成功")
+    return response_with_json(values["msg"], -1)
+
+
+@app.route("/admin/deletePage", methods=["POST"])
+@login_required
+def delete_page():
+    """删除报刊"""
+    page_id = request.form.get("page_id")
+    values = parse_param(params=["page_id"],
+                         param_values=[page_id],
+                         param_types=[int],
+                         param_required=[True])
+    if not values["status"]:
+        return response_with_json(values["msg"], -1)
+    model = Model()
+    model.close_session()
+    return response_with_json("删除成功")
 
 
 @app.route("/admin/logout")
@@ -191,24 +250,35 @@ def get_article(article_id):
 @login_required
 def paper_delete():
     """删除一周期刊"""
-    paper_id = request.form.get("paper_id")
-    value = parse_param(params=["paper_id"],
-                        param_values=[paper_id],
+    paper_num = request.form.get("paper_num")
+    value = parse_param(params=["paper_num"],
+                        param_values=[paper_num],
                         param_required=[True],
                         param_types=[int])
     if not value['status']:
         return response_with_json("删除失败", -1)
-    print value
     model = Model()
+    is_deleted = model.delete_paper(value["msg"]["paper_num"])
+    if is_deleted is None:
+        return response_with_json("期刊已经不存在")
     model.close_session()
     return response_with_json("删除成功")
 
 
 @app.route("/update/<int:article_id>")
+@login_required
 def update(article_id):
-    pass
+    """修改已经发布的文章"""
+    print article_id
+    return "ok"
 
 
+@app.route("/admin/test", methods=["GET", "POST"])
+def admin_test():
+    """测试数据"""
+    model = Model()
+    print model.delete_paper(509)
+    return "test"
 
 
 

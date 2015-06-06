@@ -178,42 +178,57 @@ class Model():
 
     def delete_paper(self, paper_num):
         """删除报纸期刊."""
-        is_exist = self.session.query(Paper.id).filter(Paper.num == paper_num).all()
+        is_exist = self.session.query(Paper.id).filter(Paper.num == paper_num).first()
         if is_exist:
             self.session.query(Paper).filter(Paper.num == paper_num).delete()
             self.session.commit()
-        else:
             return True
+        else:
+            return None
 
     def insert_article(self, article_info):
         """新增一篇文章."""
-        sql = insert(Article, values=article_info)
-        self.session.execute(sql)
+        article = Article(article_info)
+        article.add(article)
         self.session.commit()
+        return article
 
     # 修改一篇文章
     def update_article(self, article_id, article_info):
+        """修改一篇文章"""
+        article = self.session.query(Article).fiter(Article.id == article_id)
         return update(Article).where(Article.id == article_id).values(article_info).execute()
 
-    # 删除一篇文章
     def delete_article(self, article_id):
-        return delete(Article, returning=Article.id, return_defaults=True).where(Article.id == article_id).execute()
+        """删除一篇文章"""
+        article = self.session.query(Article).filter(Article.id == article_id)
+        self.session.delete(article)
+        self.session.commit()
+        return article
+
+    def new_page(self, paper_id, num, pic_url, name):
+        """添加报刊"""
+        page = Page(paper_id=paper_id, num=num, pic_url=pic_url, name=name)
+        self.session.add(page)
+        self.session.commit()
+        return page
+
+    def update_page(self, page_id, paper_id=None, num=None, pic_url=None, name=None):
+        """修改报刊"""
+        page = self.session.query(Page).filter(Page.id == page_id).first()
+        if paper_id is not None:
+            page.paper_id = paper_id
+        if pic_url is not None:
+            page.pic_url = pic_url
+        if name is not None:
+            page.name = name
+        if num is not None:
+            page.num = num
+        self.session.add(page)
+        self.session.commit()
 
     def insert_area(self, area):
         pass
 
     def close_session(self):
         self.session.close()
-
-
-if __name__ == '__main__':
-    model = Model()
-    # print model.get_paper_count()
-    # print model.get_article_list(555)
-    # print model.get_max_paper().id
-    # print
-    # print model.delete_paper(508)
-
-    # for i in model.get_area_list(273):
-    # print i.paper_id
-    # for i in model.get_all_paper():

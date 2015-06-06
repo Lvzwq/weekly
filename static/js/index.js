@@ -100,6 +100,18 @@ $(document).ready(function () {
                 'page_name': pageName,
                 "page_id": pageId
             });
+        },
+        'onUploadSuccess': function (file, data, response) {
+            console.log(file);
+            if(response){
+                var json = $.parseJSON(data);
+                if (json.code == 1){
+
+                }
+                alert(json.data);
+            }else{
+                alert("网络连接失败!");
+            }
         }
     });
 
@@ -163,7 +175,7 @@ $(document).ready(function () {
 
 
     /****首页删除按钮*****/
-    $(".delete-paper").click(function(){
+    $(".delete-paper").click(function () {
         alert("ok");
         var paperId = $(this).data("id");
         alert(paperId);

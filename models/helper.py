@@ -77,7 +77,7 @@ def check_param(param, param_value, param_type, param_required, param_default=No
     if hasattr(param_value, "__len__") and param_length.get(param):
         length = param_value.__len__()
         if hasattr(param_length, "lt") and hasattr(param_length, "gt") and (
-                param_length["lt"] < length or param_length["gt"] > length):
+                        param_length["lt"] < length or param_length["gt"] > length):
             return dict(status=False, msg="{param}的长度应该小于{min}并且大于{max}".
                         farmat(param=param, mix=param_length["lt"], max=param_length["gt"]))
     try:
@@ -114,42 +114,68 @@ def divide_area(area_list):
 
 
 def update_pic_url(pic_url):
-    return appconfig['host'] + "/Newspaper/paper" + pic_url[3:]
+    if pic_url[0:3] == "pic":
+        return appconfig['host'] + "/Newspaper/paper" + pic_url[3:]
+    else:
+        return join_folder("/", appconfig["upload_folder"], pic_url)
 
 
-def mk_file_dir():
+def mk_file_dir(file_type="image"):
     date = time_to_str(format='%Y%m')
-    upload_dir = os.path.join(appconfig['web_root'], appconfig['upload_folder'], date)
+    upload_dir = os.path.join(appconfig['web_root'], appconfig['upload_folder'], file_type, date)  # 绝对路径
+    http_folder = os.path.join("/", appconfig["upload_folder"], file_type, date)  # 相对浏览器路径
+    db_folder = os.path.join(file_type, date)  # 存储到数据库中路径
+    print "upload_folder", upload_dir
     if not os.path.exists(upload_dir):
         try:
             os.makedirs(upload_dir)
         except OSError:
             return False
-    return upload_dir
+    return upload_dir, http_folder, db_folder
 
 
 def get_filename():
     return '%s%s' % (time_to_str(format='%Y%m%d%H%M%S'), random.randrange(1000, 10000))
 
 
-def save_file(fileobj, upload_folder, filename=None):
+def join_folder(*args):
+    """拼接文件夹"""
+    return os.path.join(*args)
+
+
+def save_file(file_obj, upload_folder=None, filename=None):
     """保存文件, 图片需要重新命名."""
     image_types = ["image/jpeg", 'image/jpg', 'image/png', "image/gif"]
-    secure_type = []
-    name, ext = os.path.splitext(fileobj.filename)  # 获得文件后缀
+    secure_type = [".jpg", ".jpeg", ".png", ".doc", ".gif", ".zip", ".rar"]
+    name, ext = os.path.splitext(file_obj.filename)  # 获得文件后缀
     if filename is None:
         filename = get_filename() + ext
     else:
         filename += ext
-    if fileobj.mimetype in image_types:  # 图片格式
-        print "图片格式"
-        fullname = os.path.join(upload_folder, filename)
-    elif fileobj.mimetype in secure_type:
-        fullname = os.path.join(upload_folder, fileobj.filename)
+    if upload_folder is None:
+        upload_folder = mk_file_dir()
+    if not upload_folder:
+        return dict(status=False, result=u"文件夹没有写权限")
+    # 对文件上传类型进行安全检验
+    if file_obj.mimetype == "application/octet-stream":  # 以二进制文件上传
+        if ext in secure_type:
+            fullname = os.path.join(upload_folder[0], filename)
+            file_obj.save(fullname)
+        else:
+            return dict(status=False, result=u"不支持的文件格式")
     else:
-        return False
-    fileobj.save(fullname)
-    return os.path.join(time_to_str(format="%Y%m"), filename)
+        if file_obj.mimetype in image_types:  # 图片格式的文件上传
+            fullname = os.path.join(upload_folder[0], filename)
+            # 可能进行特殊处理
+            """doing something"""
+            file_obj.save(fullname)
+        elif file_obj.mimetype in secure_type:  # 其他类型的文件上传
+            fullname = os.path.join(upload_folder[0], filename)
+            file_obj.save(fullname)
+        else:
+            return dict(status=False, result=u"文件格式不支持上传")
+    return dict(status=True, result=(join_folder(upload_folder[1], filename),
+                                     join_folder(upload_folder[2], filename)))
 
 
 

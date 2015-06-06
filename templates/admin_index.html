@@ -9,7 +9,7 @@
         <div>
             <ul>
                 {% for page in data.page_list %}
-                    <div class="page-edit-item">
+                    <div class="page-edit-item" data-id="{{ page.id }}">
                     <li>
                         <p class="item-show"><span>{{ page.num }}版:{{ page.name }}</span>
                             <a href="#" class="update" data-page-num="{{ page.num }}" data-page-name="{{ page.name }}">[修改]</a>
@@ -17,12 +17,12 @@
                         <p class="item-hidden">
                             <input type="text" value="{{ page.num }}" class="page-num-value" size="3" />
                             <input type="text" value="{{ page.name }}" class="page-name-value" size="3" />
-                            <a href="#" class="save">[保存]</a><a href="#" class="cancel">[取消]</a>
+                            <a href="#" class="save" data-page-id="{{ page.id }}">[保存]</a><a href="#" class="cancel">[取消]</a>
                         </p>
                         <a href="/admin/edit/page/{{ page.id }}"><img src="{{ page.pic }}" class="page_img" /></a>
                     <p>
-                        <button class="btn btn-danger">删 除</button>
-                        <button class="btn btn-primary">编 辑</button>
+                        <button class="btn btn-danger delete-page">删 除</button>
+                        <button class="btn btn-primary edit-page">编 辑</button>
                     </p>
                     </li>
                     </div>

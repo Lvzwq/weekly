@@ -5,14 +5,12 @@ from config import appconfig, web_root
 import os
 
 app = Flask(__name__)
-# app.default_config.update(appconfig)
 app.template_folder = os.path.join(web_root, appconfig['template_folder'])
 app.static_folder = os.path.join(web_root, appconfig['static_path'])
 app.secret_key = appconfig['secret_key']
 app.permanent_session_lifetime = 7200
 app.register_blueprint(admin.app)
 app.register_blueprint(index.app)
-
 
 
 @app.errorhandler(404)
