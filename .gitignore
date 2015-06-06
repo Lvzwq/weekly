@@ -2,7 +2,7 @@ db.py
 .idea/
 .idea/*
 *.pyc
-/static/upload/*
+static/upload/*
 # Created by .gitignore support plugin (hsz.mobi)
 
 # Created by https://www.gitignore.io
