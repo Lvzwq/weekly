@@ -175,8 +175,14 @@ $(document).ready(function () {
     $("#paper-article").click(function () {
         var pageId = $(".right").data("pageId");
         var $articleList = $("#article-list");
+        var display = $articleList.css("display");
         $articleList.toggle();
         $("form").toggle();
+        if (display == "block"){
+            $(this).text("本期已有文章");
+        }else{
+            $(this).text("发布新文章");
+        }
         var id = $("select option:eq(0)").data("id");
         if(id == pageId) return false;
         $.get("/admin/paper/article?page_id=" + pageId, {}, function (data) {
@@ -203,15 +209,11 @@ $(document).ready(function () {
         alert(id + title);
     });
 
-    $(".tip").click(function(){
-       alert("ok");
-    });
 });
 
 function changeArticle(article_id) {
     $(function () {
         var display = $("#article-list").css("display");
-        alert(display);
         if(display == "block"){
             $("#div" + article_id).css("border", "1px solid black");
             return false;

@@ -216,6 +216,7 @@ def delete_page():
     if not values["status"]:
         return response_with_json(values["msg"], -1)
     model = Model()
+    model.delete_page(page_id)
     model.close_session()
     return response_with_json("删除成功")
 

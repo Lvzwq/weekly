@@ -7,7 +7,7 @@ from sqlalchemy import update
 from datetime import datetime
 from config import mysql
 
-# from sqlalchemy.pool import NullPool
+# from SQLAlchemy.pool import NullPool
 # 安装的扩展库SQLAlchemy
 
 conn = 'mysql://{user}:{password}@{host}/{db}?charset={charset}'.format(**mysql)
@@ -107,7 +107,6 @@ class Model():
         article_list = self.session.query(Article.id, Article.title)
         article_list = article_list.filter(Article.paper_id == paper_id).all()
         return article_list
-
 
     def get_all_paper(self, all_select=False, issued=1):
         """获得所有的期刊"""
@@ -267,6 +266,12 @@ class Model():
             return False
         paper.issued = issued
         self.session.add(paper)
+        self.session.commit()
+
+    def delete_page(self, page_id):
+        """删除报刊"""
+        page = self.session.query(Page).filter(Page.id == page_id).first()
+        self.session.delete(page)
         self.session.commit()
 
     def close_session(self):
