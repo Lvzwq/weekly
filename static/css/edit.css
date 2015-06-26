@@ -1,9 +1,9 @@
-body{
+body {
     font-size: 14px;
     font-family: Arial, Helvetica, Tahoma, Verdana, Sans-Serif;
 }
 
-.left{
+.left {
     float: left;
     border: 1px solid red;
     width: 420px;
@@ -11,21 +11,20 @@ body{
     margin-left: 30px;
 }
 
-.right{
+.right {
     float: left;
     margin-left: 40px;
-    mrgin-right:20px;
+    mrgin-right: 20px;
     width: 650px;
     min-height: 800px;
 }
 
-
-.field-text{
+.field-text {
     margin: 2px 0px 0px;
     padding: 0px 0px 0px;
 }
 
-.field-text input[type=text]{
+.field-text input[type=text] {
     margin-left: 10px;
     height: 28px;
     font-size: 15px;
@@ -34,26 +33,60 @@ body{
     border: 2px solid #bdc3c7;
 }
 
-.field-text input[type=checkbox]{
+.field-text input[type=checkbox] {
     margin-left: 5px;
     margin-right: 5px;
 }
 
-.field-text button{
+.field-text button {
     margin-left: 60px;
 }
 
-.form{
+.right-item {
     margin-bottom: 30px;
 }
 
-.area-item{
+.area-item {
+    z-index: 0;
     cursor: pointer;
     position: absolute;
     border: red 2px dashed;
 }
 
-.area-item:hover{
+.area-item:hover {
     border: 2px solid red;
 }
+
+.page-pic {
+    background-repeat: no-repeat;
+    position: relative;
+    width: 409px;
+    height: 597px;
+}
+
+.scrop-switch button{
+    margin-left: 40px;
+}
+
+#select-pic{
+    background-repeat: no-repeat;
+    position: relative;
+    width: 409px;
+    height: 597px;
+}
+
+.tip{
+    z-index: 10;
+}
+.tip img{
+    width: 30px;
+    height: 30px;
+}
+
+#article-list{
+    display: none;
+    margin-top: 30px;
+}
+
+
 

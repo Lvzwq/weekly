@@ -5,7 +5,7 @@ from flask import (render_template, request, redirect, url_for, abort)
 from models.model import Model
 from models.helper import *
 from models.url import (login_required, do_signin, is_login, destroy_session, set_login)
-from config import appconfig
+import collections
 
 app = Blueprint("admin", __name__)
 
@@ -58,6 +58,7 @@ def admin():
 @app.route("/admin/edit/page/<int:page_id>", methods=['GET'])
 @login_required
 def page_edit(page_id):
+    """编辑文章."""
     model = Model()
     page_info = model.get_page_info(page_id)
     if page_info is None:
@@ -71,6 +72,7 @@ def page_edit(page_id):
 @app.route("/admin/file/upload", methods=['POST'])
 @login_required
 def file_upload():
+    """添加文章时的页面图片和文件上传"""
     ckeditor = request.args.get("CKEditor")
     ckeditor_func_name = request.args.get("CKEditorFuncNum")
     print ckeditor, ckeditor_func_name
@@ -232,20 +234,6 @@ def update_password():
     return "update password"
 
 
-@app.route("/admin/article/<int:article_id>", methods=["GET"])
-@login_required
-def get_article(article_id):
-    """获得一篇文章的信息"""
-    model = Model()
-    article_info = model.get_article_info(article_id)
-    article = dict(id=article_info.id, content=article_info.content,
-                   title=article_info.title, sub_title=article_info.sub_title,
-                   time=time_to_str(article_info.time), author=article_info.author,
-                   reply_title=article_info.reply_title, has_pic=article_info.has_pic,
-                   show_author=article_info.show_author)
-    return response_with_json(article)
-
-
 @app.route("/admin/paper/delete", methods=['POST'])
 @login_required
 def paper_delete():
@@ -265,12 +253,116 @@ def paper_delete():
     return response_with_json("删除成功")
 
 
-@app.route("/update/<int:article_id>")
+@app.route("/admin/article/<int:article_id>", methods=["GET"])
+@login_required
+def get_article(article_id):
+    """获得一篇文章的信息"""
+    model = Model()
+    article_info = model.get_article_info(article_id)
+    article = dict(id=article_info.id, content=article_info.content,
+                   title=article_info.title, sub_title=article_info.sub_title,
+                   time=time_to_str(article_info.time), author=article_info.author,
+                   reply_title=article_info.reply_title, has_pic=article_info.has_pic,
+                   show_author=article_info.show_author)
+    return response_with_json(article)
+
+
+
+@app.route("/admin/article", methods=["POST"])
+@login_required
+def admin_article_new():
+    """新增一篇文章"""
+    params = collections.OrderedDict()
+    params["width"] = request.form.get("width")
+    params["height"] = request.form.get("height")
+    params["x"] = request.form.get("x")
+    params["y"] = request.form.get("y")
+    params["title"] = request.form.get("title").encode("utf-8")
+    params["reply_title"] = request.form.get("reply_title").encode("utf-8")
+    params["content"] = request.form.get("content").encode("utf-8")
+    params["sub_title"] = request.form.get("sub_title").encode("utf-8")
+    params["author"] = request.form.get("author").encode("utf-8")
+    params["has_pic"] = request.form.get("has_pic")
+    params["show_author"] = request.form.get("show_author")
+    params["page_id"] = request.form.get("page_id")
+    params_type = [int, int, int, int, str, str, str, str, str, int, int, int]
+    params_required = [True for _ in range(12)]
+    values = parse_param(params=params.keys(),
+                         param_values=params.values(),
+                         param_types=params_type,
+                         param_required=params_required)
+    if not values["status"]:
+        return response_with_json(values["msg"], -1)
+    model = Model()
+    print params
+    page = model.get_page_info(values["msg"]["page_id"])
+    params["paper_id"] = page.paper_id
+    article = model.insert_article(**params)
+    params["article_id"] = article.id
+    model.insert_area(**params)
+    return response_with_json(dict(id=article.id))
+
+
+@app.route("/admin/article/<int:article_id>", methods=["POST"])
 @login_required
 def update(article_id):
     """修改已经发布的文章"""
-    print article_id
-    return "ok"
+    params = collections.OrderedDict()
+    params["id"] = article_id
+    params["title"] = request.form.get("title").encode("utf-8")
+    params["reply_title"] = request.form.get("reply_title").encode("utf-8")
+    params["content"] = request.form.get("content").encode("utf-8")
+    params["sub_title"] = request.form.get("sub_title").encode("utf-8")
+    params["author"] = request.form.get("author").encode("utf-8")
+    params["has_pic"] = request.form.get("has_pic")
+    params["show_author"] = request.form.get("show_author")
+    params["page_id"] = request.form.get("page_id")
+    params_type = [int, str, str, str, str, str, int, int, int]
+    params_required = [True for _ in range(9)]
+    values = parse_param(params=params.keys(),
+                         param_values=params.values(),
+                         param_types=params_type,
+                         param_required=params_required)
+    if not values["status"]:
+        return response_with_json(values["msg"], -1)
+    model = Model()
+    model.update_article(**params)
+    return response_with_json("更新成功")
+
+
+@app.route("/admin/add_page/<int:page_id>", methods=["GET"])
+@login_required
+def add_page(page_id):
+    model = Model()
+    page = model.get_page_info(page_id)
+    if page is None:
+        abort(404)
+    num = model.get_paper_info(page.paper_id)
+    return redirect(url_for("admin.add_paper", paper_num=num))
+
+
+@app.route("/admin/paper/article", methods=["GET"])
+@login_required
+def paper_article():
+    """获得一期周刊中所有的文章"""
+    page_id = request.args.get("page_id")
+    model = Model()
+    page = model.get_page_info(page_id)
+    if page is None:
+        abort(404)
+    article_list = model.get_articles(page.paper_id)
+    return response_with_json(article_list)
+
+
+@app.route("/admin/paper/issued/<int:issued>", methods=["GET"])
+@login_required
+def article_issued(issued):
+    paper_id = request.args.get("paper_id")
+    if issued not in [1, 0]:
+        abort(404)
+    model = Model()
+    model.paper_issued(paper_id, issued)
+    return response_with_json("更新成功")
 
 
 @app.route("/admin/test", methods=["GET", "POST"])

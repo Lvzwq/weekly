@@ -3,7 +3,7 @@ from sqlalchemy import *
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import func
-from sqlalchemy import update, delete, insert
+from sqlalchemy import update
 from datetime import datetime
 from config import mysql
 
@@ -102,6 +102,13 @@ class Model():
         article_list = article_list.filter(Article.page_id == page_id).all()
         return article_list
 
+    def get_articles(self, paper_id):
+        """获得一期中所有的文章"""
+        article_list = self.session.query(Article.id, Article.title)
+        article_list = article_list.filter(Article.paper_id == paper_id).all()
+        return article_list
+
+
     def get_all_paper(self, all_select=False, issued=1):
         """获得所有的期刊"""
         if all_select:
@@ -186,18 +193,28 @@ class Model():
         else:
             return None
 
-    def insert_article(self, article_info):
+    def insert_article(self, **kwargs):
         """新增一篇文章."""
-        article = Article(article_info)
-        article.add(article)
+        args = ["title", "sub_title", "reply_title", "content",
+                "paper_id", "page_id", "show_author", "has_pic",
+                "author"]
+        d = dict()
+        for key in kwargs.iterkeys():
+            if key in args:
+                d[key] = kwargs[key]
+        d["time"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        article = Article(**d)
+        self.session.add(article)
         self.session.commit()
         return article
 
-    # 修改一篇文章
-    def update_article(self, article_id, article_info):
+    def update_article(self, **kwargs):
         """修改一篇文章"""
-        article = self.session.query(Article).fiter(Article.id == article_id)
-        return update(Article).where(Article.id == article_id).values(article_info).execute()
+        # article = self.session.query(Article).get(kwargs["id"])
+        # for key in kwargs.iterkeys():
+        # article.key = kwargs[key]
+        # self.session.commit()
+        return update(Article).where(Article.id == kwargs['id']).values(kwargs).execute()
 
     def delete_article(self, article_id):
         """删除一篇文章"""
@@ -227,8 +244,30 @@ class Model():
         self.session.add(page)
         self.session.commit()
 
-    def insert_area(self, area):
-        pass
+    def insert_area(self, **kwargs):
+        """新增一个报刊区域"""
+        args = ["page_id", "paper_id", "article_id", "x", "y", "width", "height"]
+        d = dict()
+        for key in kwargs.iterkeys():
+            if key in args:
+                d[key] = kwargs[key]
+        d['x'] = str(d['x']) + "px"
+        d['y'] = str(d['y']) + "px"
+        d['width'] = str(d['width']) + "px"
+        d['height'] = str(d['height']) + "px"
+        area = Area(**d)
+        self.session.add(area)
+        self.session.commit()
+        return area
+
+    def paper_issued(self, paper_id, issued):
+        """改变期刊的发布状态"""
+        paper = self.session.query(Paper).filter(Paper.id == paper_id).first()
+        if not paper:
+            return False
+        paper.issued = issued
+        self.session.add(paper)
+        self.session.commit()
 
     def close_session(self):
         self.session.close()

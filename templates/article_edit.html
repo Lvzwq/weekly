@@ -1,58 +1,81 @@
- {% extends 'base/edit_base.html' %}
- {% block title %}校报期刊修改{% endblock %}
+{% extends 'base/edit_base.html' %}
+{% block title %}校报期刊修改{% endblock %}
 
- {% block content %}
-<div class="left">
-<div class="baozhi" id="showpic">
-        <div style="background-image: url({{ page_info.pic }}); background-repeat:no-repeat; position: relative; width: 409px; height: 597px;">
-            <div style="width:100%; height:100%;background: url(/static/images/banner.gif) no-repeat; "></div>
-            {% for area in area_list %}
-                <div style="position: absolute; top: {{ area.y }}; left: {{ area.x}}" id="div{{ area.article_id }}">
-                    <div><img src="/static/images/tip.gif"></div>
+{% block content %}
+    <div class="left">
+        <div class="baozhi" id="showpic">
+            <div class="page-pic">
+                <div id="select-pic" data-id="{{ page_info.id }}"
+                     style="background-image: url({{ page_info.pic }}); ">
+                    <div style="width:100%; height:100%;background: url(/static/images/banner.gif) no-repeat; "></div>
+
+                    {% for area in area_list %}
+                        <div style="position: absolute; top: {{ area.y }}; left: {{ area.x }}"
+                             id="div{{ area.article_id }}" onclick="return deleteArea({{ area.id }})">
+                            <div class="tip"><img src="/static/images/remove.png"></div>
+                        </div>
+                        <div class="area-item"
+                             style="left: {{ area.x }}; top: {{ area.y }}; width: {{ area.width }}; height: {{ area.height }};"
+                             onclick="changeArticle({{ area.article_id }});">
+                        </div>
+                    {% endfor %}
                 </div>
-                <div class="area-item" style="left: {{ area.x }}; top: {{ area.y }}; width: {{ area.width }}; height: {{ area.height }};"
-                     onclick="changeArticle({{ area.article_id }});">
-                </div>
-            {% endfor %}
+            </div>
+        </div>
+        <div class="scrop-switch">
+            <button class="btn btn-primary" id="scrop-on">截图</button>
+            <button class="btn btn-default" id="scrop-off">禁用</button>
+            <button class="btn btn-success" id="scrop-submit">确认截图</button>
         </div>
     </div>
-</div>
-<div class="right">
-    <div class="form">
-        <form>
+    <div class="right" data-page-id="{{ page_info.id }}">
+        <div class="right-item">
             <div class="form-group field-text">
-                <button class="btn btn-success">添加新一版</button>
-                <button class="btn btn-default">本期已有文章</button>
+                <button class="btn btn-success" id="add-page">添加新一版</button>
+                <button class="btn btn-primary" id="paper-article">本期已有文章</button>
             </div>
-            <div class="form-group field-text">
-                <label for="input for title"  class="control-label">标题:</label>
-                <input type="text"  placeholder="标题" name="title" id="title" />
+            <div class="form-group" id="article-list">
+                    <div class="col-xs-8">
+                        <select id="article-title"  size="10" class="form-control select select-primary select-block mbl">
+                                <option value="0" selected>-------请选择文章-------</option>
+                        </select>
+                    </div>
+                    <div class="col-xs-4">
+                        <button class="btn btn-primary" id="insure">确定</button>
+                    </div>
             </div>
-            <div class="form-group field-text">
-                <label for="input for title" class="control-label">引题:</label>
-                <input type="text"  placeholder="引题" name="reply-title" id="reply-title" />
-            </div>
-            <div class="form-group field-text">
-                <label for="input for title" class="control-label">副题:</label>
-                <input type="text"  placeholder="副题" name="sub-title" id="sub-title" />
-            </div>
-            <div class="form-group field-text">
-                <label for="input for title" class="control-label">作者:</label>
-                <input type="text"  placeholder="作者" name="author" id="author" />
-                <input type="checkbox" name="checkbox" id="show-author" />显示作者
-                <input type="checkbox" name="checkbox" id="has-pic" />图片新闻
-            </div>
-            <div class="form-group field-text">
-                <label for="input for title" class="control-label">正文:</label>
+
+            <div style="clear: both"></div>
+            <form>
+                <div class="form-group field-text">
+                    <label for="input for title" class="control-label">标题:</label>
+                    <input type="text" placeholder="标题" name="title" id="title"/>
+                </div>
+                <div class="form-group field-text">
+                    <label for="input for title" class="control-label">引题:</label>
+                    <input type="text" placeholder="引题" name="reply-title" id="reply-title"/>
+                </div>
+                <div class="form-group field-text">
+                    <label for="input for title" class="control-label">副题:</label>
+                    <input type="text" placeholder="副题" name="sub-title" id="sub-title"/>
+                </div>
+                <div class="form-group field-text">
+                    <label for="input for title" class="control-label">作者:</label>
+                    <input type="text" placeholder="作者" name="author" id="author"/>
+                    <input type="checkbox" name="checkbox" id="show-author"/>显示作者
+                    <input type="checkbox" name="checkbox" id="has-pic"/>图片新闻
+                </div>
+                <div class="form-group field-text">
+                    <label for="input for title" class="control-label">正文:</label>
                 <textarea name="content" id="content" rows="80" cols="80">
                         这里输入正文内容！！！
                 </textarea>
-            </div>
-            <div class="form-group field-text">
-                <button class="btn btn-primary" id="submit">提交</button>
-                <button class="btn btn-primary" id="reset">重置</button>
-            </div>
-        </form>
+                </div>
+                <div class="form-group field-text">
+                    <button class="btn btn-primary" id="submit">提交</button>
+                    <button class="btn btn-primary" id="reset">重置</button>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 {% endblock %}

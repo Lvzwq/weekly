@@ -13,6 +13,8 @@ def format_week(week=datetime.now().isoweekday()):
 
 
 def time_to_str(tm=datetime.now(), format="%Y-%m-%d %H:%M:%S"):
+    if tm is None:
+        return None
     return tm.strftime(format).decode("utf-8")
 
 
